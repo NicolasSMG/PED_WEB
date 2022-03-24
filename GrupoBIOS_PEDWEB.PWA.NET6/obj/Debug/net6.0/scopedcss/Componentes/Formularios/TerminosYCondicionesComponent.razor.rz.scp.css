@@ -1,0 +1,26 @@
+#TestId[b-2wcz0rqdlh] {
+    font-family: "MS Gothic";
+    font-size: 18px;
+    height: 375px;
+}
+
+/*DEFINE ALL OF THE CUSTOM FONTS*/
+.ql-font-MSGothic[b-2wcz0rqdlh] {
+    font-family: 'MS Gothic';
+}
+
+.ql-font-Bahnschrift[b-2wcz0rqdlh] {
+    font-family: 'Bahnschrift'
+}
+
+.ql-font-Impact[b-2wcz0rqdlh] {
+    font-family: 'Impact';
+}
+
+.ql-font-Courier[b-2wcz0rqdlh] {
+    font-family: 'Courier';
+}
+
+.ql-font-Comic[b-2wcz0rqdlh] {
+    font-family: 'Comic Sans MS';
+}

@@ -1,0 +1,70 @@
+﻿@inherits LayoutComponentBase
+@inject RefrescarAppState refrescarAppState
+
+<CascadingValue Value="@AppState">
+    <div class="page">
+        <NavMenu />
+        <main style="width:100%;">
+            @if (UsuarioAutenticado)
+            {
+                <div class="top-row px-4 d-flex">
+                    <div class="mr-auto p-2">
+                        <h4>@AppState.TituloPagina</h4>
+                    </div>
+                    <AuthorizeView>
+                        <Authorized>
+                            <MatButton Type="button" Icon="person" OnClick="@ClickMenuUsuario" @ref="BotonMenuUsuario" />
+                            <MatMenu @ref="MenuUsuario">
+                                <MatList>
+                                    <MatListGroupSubHeader>
+                                        Ha iniciado sesion como @context.User.Identity.Name
+                                    </MatListGroupSubHeader>
+                                    <MatListGroupSubHeader>
+                                        Fecha de publicación: @BuildInfo
+                                    </MatListGroupSubHeader>
+                                    <MatListItem Href="Logout">
+                                        <MatButton Icon="exit_to_app" Outlined="true">Cerrar Sesión</MatButton>
+                                    </MatListItem>
+                                </MatList>
+                            </MatMenu>
+                        </Authorized>
+                    </AuthorizeView>
+                </div>
+            }
+            <article class="content px-4">
+                @Body
+            </article>
+        </main>
+    </div>
+
+</CascadingValue>
+@code {
+
+    public AppState AppState = new AppState();
+    [CascadingParameter] private Task<AuthenticationState> AuthenticationState { get; set; }
+    MatButton BotonMenuUsuario;
+    BaseMatMenu MenuUsuario;
+    private bool UsuarioAutenticado = false;
+    string BuildInfo;
+
+    protected async override Task OnInitializedAsync()
+    {
+        await ActualizarTitulo();
+        refrescarAppState.ActualizarContenedoresSuperiores += ActualizarTitulo;
+
+        Assembly curAssembly = typeof(Program).Assembly;
+        BuildInfo = $"{curAssembly.GetCustomAttributes(false).OfType<AssemblyTitleAttribute>().FirstOrDefault().Title}".Substring(0, 11);
+        Console.WriteLine($"Fecha de publicación: {BuildInfo}");
+    }
+    private async Task ActualizarTitulo()
+    {
+        var authState = await AuthenticationState;
+        var usuario = authState.User;
+        UsuarioAutenticado = usuario.Identity.IsAuthenticated;
+        StateHasChanged();
+    }
+    public void ClickMenuUsuario(MouseEventArgs e)
+    {
+        MenuUsuario.OpenAsync(BotonMenuUsuario.Ref);
+    }
+}

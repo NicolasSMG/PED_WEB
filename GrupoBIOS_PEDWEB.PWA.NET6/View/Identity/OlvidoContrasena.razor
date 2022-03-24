@@ -1,0 +1,50 @@
+﻿@page "/OlvidoContrasena"
+@inject IJSRuntime js;
+@inject IOlvidoContraseña_ViewModel OlvidoContraseña_ViewModel
+@inject RefrescarAppState refrescarAppState
+
+{
+<EditForm Model="@OlvidoContraseña_ViewModel.OlvidoContraseñaDTO" OnValidSubmit="OlvidoContraseña">
+    <DataAnnotationsValidator />
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+            @if (!string.IsNullOrEmpty(Logo))
+            {
+                <div class="fadeIn first">
+                    <img src="@Logo" id="icon" alt="Logo ASEL" />
+                </div>
+            }
+
+            <InputText class="fadeIn second" id="CedulaCiudadania" @bind-Value="@OlvidoContraseña_ViewModel.OlvidoContraseñaDTO.CedulaCiudadania" name="cc" placeholder="Cedula Ciudadania" />
+            <ValidationMessage For="@(() => OlvidoContraseña_ViewModel.OlvidoContraseñaDTO.CedulaCiudadania)" />
+
+            <InputText class="fadeIn second" id="login" @bind-Value="@OlvidoContraseña_ViewModel.OlvidoContraseñaDTO.NombreUsuario" name="Usuario" placeholder="Correo electronico" />
+            <ValidationMessage For="@(() => OlvidoContraseña_ViewModel.OlvidoContraseñaDTO.NombreUsuario)" />
+
+            <input type="submit" class="fadeIn fourth" value="Recordar contraseña">
+
+
+            <div id="formFooter">
+                <a class="underlineHover" href="..">Login</a>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    protected string Logo;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await refrescarAppState.LlamarActualizarNavBarRoles();
+        await refrescarAppState.LlamarActualizarContenedoresSuperiores();
+
+        Logo = await js.GetFromLocalStorage("LogoCompañia");
+        StateHasChanged();
+    }
+
+    private async Task OlvidoContraseña()
+    {
+        await OlvidoContraseña_ViewModel.OlvidoContraseña();
+    }
+}

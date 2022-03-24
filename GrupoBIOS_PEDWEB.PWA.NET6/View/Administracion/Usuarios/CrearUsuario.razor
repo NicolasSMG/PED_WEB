@@ -1,0 +1,37 @@
+﻿
+@page "/Usuarios/crear"
+@inject ICrearUsuarioViewModel crearUsuarioViewModel
+@inject RefrescarAppState refrescarAppState
+@attribute [Authorize(Roles = "1")]
+
+@if (MostrarFormulario)
+{
+    <div class="form-inline alert  alert-dark" role="alert">
+        <div class="form-group mx-sm-2 mb-2">
+            <MatButton Class="button-principal" Raised="true" Link="/Usuarios">Atras</MatButton>
+        </div>
+    </div>
+    <FormularioUsuario UsuarioDTO="crearUsuarioViewModel.CrearUsuarioDTO" 
+                       FormularioUsuarioDTO="crearUsuarioViewModel.NuevoUsuarioDTO" 
+                       OnValidSubmit="CrearUsuarioAsync" />
+}
+else
+{
+    <Cargando></Cargando>
+}
+@code{
+    [CascadingParameter] public AppState AppState { get; set; }
+    protected bool MostrarFormulario = false;
+    protected async override Task OnInitializedAsync()
+    {
+        AppState.TituloPagina = "Crear Usuario";
+        await refrescarAppState.LlamarActualizarContenedoresSuperiores();
+        await crearUsuarioViewModel.ObtenerNuevaUsuarioDTOAsync();
+        MostrarFormulario = true;
+    }
+    private async Task CrearUsuarioAsync()
+    {
+        await crearUsuarioViewModel.CrearUsuarioAsync();
+        StateHasChanged();
+        }
+}

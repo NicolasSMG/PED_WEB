@@ -1,0 +1,36 @@
+﻿@page "/AdministracionPerfiles"
+@inject IGestionRoles_ViewModel GestionRoles
+@inject RefrescarAppState refrescarAppState
+@attribute [Authorize(Roles = "11,13,14")]
+
+
+@if (GestionRoles.Formulario)
+{
+    @if (GestionRoles.Roles != null)
+    {
+        <AdministracionPerfilesComponent Roles="GestionRoles.Roles"
+                                         ConsultarPermisos="(string valor) => GestionRoles.ObtenerPermisosRol(valor)"
+                                         ConsultarRol="(string valor) => GestionRoles.ObtenerRol(valor)"
+                                         EliminarRolSeleccionado="(int valor) => GestionRoles.EliminarRol(valor)"
+                                         RolConsultado="GestionRoles.RolConsultado"
+                                         GuardadoExitoso="GestionRoles.GuardadoExitoso"/>
+              
+    }
+}
+else
+{
+    <Cargando></Cargando>
+}
+
+
+@code {
+    [CascadingParameter] public AppState AppState { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        AppState.TituloPagina = "Administracion de perfiles";
+        await refrescarAppState.LlamarActualizarContenedoresSuperiores();
+        await GestionRoles.InicializarViewModel();
+        StateHasChanged();
+    }
+}

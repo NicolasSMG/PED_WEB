@@ -1,0 +1,29 @@
+﻿@page "/logout"
+@inject IProveedorAutenticacionJWT authModel
+@inject IJSRuntime JSRuntime
+@inject NavigationManager navigationManager
+
+<text>Deslogueando....</text>
+
+@code {
+    [CascadingParameter] public AppState AppState { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+
+        await LogOut();
+    }
+    private async Task LogOut()
+    {
+        await authModel.Logout();
+        var idcompania = await JSRuntime.GetFromLocalStorage("CompañiaId");
+        if (string.IsNullOrEmpty(idcompania))
+        {
+            navigationManager.NavigateTo("");
+        }
+        else
+        {
+            navigationManager.NavigateTo($"?comp={idcompania}");
+        }
+    }
+}

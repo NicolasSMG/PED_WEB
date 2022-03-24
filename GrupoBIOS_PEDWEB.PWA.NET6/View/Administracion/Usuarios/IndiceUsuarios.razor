@@ -1,0 +1,71 @@
+﻿@page "/Usuarios"
+@inject IIndiceUsuariosViewModel indiceUsuariosViewModel
+@inject RefrescarAppState refrescarAppState
+@attribute [Authorize(Roles = "1")]
+
+@if (indiceUsuariosViewModel.Mensaje != null)
+{
+    @if (indiceUsuariosViewModel.Mensaje == "Mostrar Formulario")
+    {
+        <div class="form-inline alert  alert-dark" role="alert">
+            <div class="form-group mx-sm-3 mb-2">
+                <MatButton Class="button-principal" Raised="true" Link="Usuarios/crear">Crear Usuario</MatButton>
+            </div>
+        </div>
+        <div class="form-inline alert  alert-dark" role="alert">
+            <div class="form-group mx-sm-3 mb-2 div-filtro">
+                <input @bind-value="indiceUsuariosViewModel.NombreFiltrar" @bind-value:event="oninput"
+                       @onkeyup="@((KeyboardEventArgs e) => indiceUsuariosViewModel.NombreKeyPress(e))"
+                       type="text" class="input-filtro" id="nombre" placeholder="Nombre" />
+            </div>
+            <div class="form-group mx-sm-3 mb-2 div-filtro">
+                <input @bind-value="indiceUsuariosViewModel.ApellidoFiltrar" @bind-value:event="oninput"
+                       @onkeyup="@((KeyboardEventArgs e) => indiceUsuariosViewModel.ApellidoKeyPress(e))"
+                       type="text" class="input-filtro" id="Apellido" placeholder="Apellido" />
+            </div>
+            <button type="button" class="btn btn-danger mb-2" @onclick="indiceUsuariosViewModel.LimpiarOnClick">Limpiar</button>
+        </div>
+
+        <MatTable Items="@indiceUsuariosViewModel.UsuariosOrdenadas" class="mat-elevation-z5" UseSortHeaderRow="true"
+                  PageLabel="Pagina" PageRecordCountLabel="Usuarios por página:   ">
+            <MatTableHeader>
+                <MatSortHeaderRow SortChanged="@indiceUsuariosViewModel.SortData">
+                    <MatSortHeader SortId="Nombre"><span style="width:400px">Nombre</span></MatSortHeader>
+                    <MatSortHeader SortId="Apellido"><span style="width:400px">Apellido</span></MatSortHeader>
+                    <MatSortHeader></MatSortHeader>
+                </MatSortHeaderRow>
+            </MatTableHeader>
+            <MatTableRow>
+                <td>@context.Nombres</td>
+                <td>@context.Apellidos</td>
+                <td>
+                    <MatIconButton Icon="settings" OnClick="@(() =>indiceUsuariosViewModel.ActualizarUsuario(context.Id))"></MatIconButton>
+                </td>
+            </MatTableRow>
+        </MatTable>
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            <h5> @indiceUsuariosViewModel.Mensaje</h5>
+        </div>
+    }
+}
+else
+{
+    <Cargando />
+}
+
+@code {
+    [CascadingParameter] public AppState AppState { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        AppState.TituloPagina = "Usuarios";
+        if (!AppState.PaginasRoles.ContainsKey("Usuarios"))
+            AppState.PaginasRoles.Add("Usuarios", 1);
+        await refrescarAppState.LlamarActualizarContenedoresSuperiores();
+        await indiceUsuariosViewModel.CargarUsuarios();
+    }
+
+}

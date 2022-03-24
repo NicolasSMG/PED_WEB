@@ -1,0 +1,91 @@
+﻿@page "/InformeGeneral"
+@inject RefrescarAppState refrescarAppState
+@inject IInformeGeneral_ViewModel InformeGeneralViewModel
+
+
+@if (InformeGeneralViewModel.Mensaje != null)
+{
+    @if (InformeGeneralViewModel.Mensaje == "Mostrar Formulario")
+    {
+        <div class="form-inline alert  alert-dark" role="alert">
+            <div class="row">
+                <div class="col">
+                    <MatDatePicker @ref="InputFechaInicial" Label="Fecha Inicial" Outlined="true" TValue="DateTime" @bind-Value="InformeGeneralViewModel.FechaInicial"></MatDatePicker>
+                    <ValidationMessage For="@(()=>InformeGeneralViewModel.FechaInicial)" />
+                </div>
+                <div class="col">
+                    <MatDatePicker @ref="InputFechaFinal" Label="Fecha Final" Outlined="true" TValue="DateTime" @bind-Value="InformeGeneralViewModel.FechaFinal"></MatDatePicker>
+                    <ValidationMessage For="@(()=>InformeGeneralViewModel.FechaFinal)" />
+                </div>
+                <div class="col">
+                    <MatTooltip Tooltip="Generar Informe" Wrap="true">
+                        <MatButton Class="button-principal" Raised="true" Type="submit" OnClick="@(() => ConstruirInformeGeneral())" Icon="@MatIconNames.Save" />
+                    </MatTooltip>
+                </div>
+                <div class="col"></div>
+                <div class="col"></div>
+            </div>
+        </div>
+
+        @if (InformeGeneralViewModel.InformeGeneral != null)
+        {
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 mt-2">
+                        @*   <VisorPDF DocumentoPDF="DocumentoPDF"
+                            NombreArchivo="@($"Reporte {imprimirFincaViewModel.FincaDTO.Finca.NombreCortado}.pdf")" />
+                            <VisorPDF></VisorPDF>*@
+                    </div>
+                </div>
+            </div>
+
+        }
+        else
+        {
+            @if (InformeGeneralViewModel.Mensaje == "Generando Documendo")
+            {
+                <h3 class="mat-subtitle1" style="justify-content:center">Creando documento</h3>
+                <MatProgressBar Indeterminate="true"></MatProgressBar>
+            }
+        }
+    }
+    else
+    {
+        @if (InformeGeneralViewModel.Mensaje == "Generando Documendo")
+        {
+            <h3 class="mat-subtitle1" style="justify-content:center">Creando documento</h3>
+            <MatProgressBar Indeterminate="true"></MatProgressBar>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">
+                <h5> @InformeGeneralViewModel.Mensaje</h5>
+            </div>
+        }
+
+    }
+}
+else
+{
+    <h3 class="mat-subtitle1" style="justify-content:center">Creando documento</h3>
+    <MatProgressBar Indeterminate="true"></MatProgressBar>
+}
+
+@code {
+    [CascadingParameter] public AppState AppState { get; set; }
+    public MatDatePicker<DateTime> InputFechaInicial;
+    public MatDatePicker<DateTime> InputFechaFinal;
+    protected async override Task OnInitializedAsync()
+    {
+        AppState.TituloPagina = "Informe General";
+        if (!AppState.PaginasRoles.ContainsKey("InformeGeneral"))
+            AppState.PaginasRoles.Add("InformeGeneral", 7);
+        await refrescarAppState.LlamarActualizarContenedoresSuperiores();
+        await InformeGeneralViewModel.InicializarViewModel();
+    }
+
+    public async Task ConstruirInformeGeneral()
+    {
+        await InformeGeneralViewModel.ConstruirInformeGeneralAsync();
+    }
+}

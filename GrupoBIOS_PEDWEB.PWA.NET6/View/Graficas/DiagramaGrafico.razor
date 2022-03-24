@@ -1,0 +1,80 @@
+﻿@page "/DiagramaGrafico"
+@inject RefrescarAppState refrescarAppState
+@inject IJSRuntime js;
+@inject IDataSetGraficos_ViewModel DataSetGraficos_ViewModel
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            @if (DataSetGraficos_ViewModel.DatasetGraficaVentasPorLinea != null)
+            {
+                <BarrasChart2 ListadoDatasets="DataSetGraficos_ViewModel.DatasetGraficaVentasPorLinea" Titulo="Ventas por linea" />
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            @if (DataSetGraficos_ViewModel.DatasetGraficaLineaMensual != null)
+            {
+                <BarrasChar ListadoDatasets="DataSetGraficos_ViewModel.DatasetGraficaLineaMensual" Titulo="Top 10 Linea mensual" />
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            @if (DataSetGraficos_ViewModel.DatasetGraficaLineaAnual != null)
+            {
+                <BarrasChar ListadoDatasets="DataSetGraficos_ViewModel.DatasetGraficaLineaAnual" Titulo="Top 10 Linea anual" />
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            @if (DataSetGraficos_ViewModel.DatasetGraficaNombreConductorMensual != null)
+            {
+                <BarrasChar ListadoDatasets="DataSetGraficos_ViewModel.DatasetGraficaNombreConductorMensual" Titulo="Top 10 conductor mensual" />
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            @if (DataSetGraficos_ViewModel.DatasetGraficaNombreConductorAnual != null)
+            {
+                <BarrasChar ListadoDatasets="DataSetGraficos_ViewModel.DatasetGraficaNombreConductorAnual" Titulo="Top 10 conductor Anual" />
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            @if (DataSetGraficos_ViewModel.DatasetGraficaPlacaMensual != null)
+            {
+                <BarrasChar ListadoDatasets="DataSetGraficos_ViewModel.DatasetGraficaPlacaMensual" Titulo="Top 10 placas mensual" />
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            @if (DataSetGraficos_ViewModel.DatasetGraficaPlacaAnual != null)
+            {
+                <BarrasChar ListadoDatasets="DataSetGraficos_ViewModel.DatasetGraficaPlacaAnual" Titulo="Top 10 placas anual" />
+            }
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [CascadingParameter] public AppState AppState { get; set; }
+    public string TipoIngresoId { get; set; }
+    protected async override Task OnInitializedAsync()
+    {
+        TipoIngresoId = await js.GetFromLocalStorage("TIPOINGRESOID");
+        AppState.TituloPagina = "";
+        await refrescarAppState.LlamarActualizarContenedoresSuperiores();
+        await DataSetGraficos_ViewModel.OnInitializedAsync();
+
+        StateHasChanged();
+    }
+}

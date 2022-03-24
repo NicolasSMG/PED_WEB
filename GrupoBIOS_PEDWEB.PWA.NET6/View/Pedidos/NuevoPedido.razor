@@ -1,0 +1,55 @@
+﻿@page "/Pedido/Nuevo"
+@inject INuevoPedido_ViewModel NuevoPedidoViewModel
+@inject NavigationManager navigationManager
+@inject RefrescarAppState refrescarAppState
+@attribute [Authorize(Roles = "1")]
+
+@if (NuevoPedidoViewModel.Mensaje != null)
+{
+    @if (NuevoPedidoViewModel.Mensaje == "MostrarFormulario")
+    {
+
+
+        <FormularioPedido PedidoDTO="NuevoPedidoViewModel.PedidoDTO"
+                  FormularioPedidoDTO="NuevoPedidoViewModel.FormularioPedidoDTO"
+                  OnValidSubmit="(x) => NuevoPedidoViewModel.GuardarPedido(x)"
+                  ActualizarClienteId="(string x) => NuevoPedidoViewModel.ClienteHasChanged(x) "
+                  ActualizarSucursalId="(string x) => NuevoPedidoViewModel.SucursalHasChanged(x)"
+                  PromedioPedido="(PromedioDTO x) => NuevoPedidoViewModel.ObtenerPromedioPedido(x)"
+                  CargarUltimoPedido="x => NuevoPedidoViewModel.CargarUltimoPedido()"
+                  DescripcionDTO="NuevoPedidoViewModel.DescripcionDTO"
+                  ObtenerNombreSucursal="(string x) => NuevoPedidoViewModel.ConsultarNombreSucursal(x)"
+                  NombreSucursal="NuevoPedidoViewModel.NombreSucursalDTO"
+                  NombrePuntoEnvio="(NombrePuntoEnvioDTO value) => NuevoPedidoViewModel.ConsultarNombrePuntoEnvio(value)"
+                  EditarSucursalyPuntoEnvio="true"
+                  AnularPedido="(AnuladoDTO value) => NuevoPedidoViewModel.AnularPedido(value)"/>
+
+
+
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            <h5> @NuevoPedidoViewModel.Mensaje</h5>
+        </div>
+    }
+}
+else
+{
+    <Cargando />
+}
+@code {
+
+    public string VisualizarDetallePedido { get; set; }
+    [CascadingParameter] public AppState AppState { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        AppState.TituloPagina = "Nuevo Pedido";
+        await refrescarAppState.LlamarActualizarContenedoresSuperiores();
+        await NuevoPedidoViewModel.InicializarViewModel(0);
+    }
+
+
+
+}

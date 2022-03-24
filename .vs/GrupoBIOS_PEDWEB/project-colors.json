@@ -1,0 +1,46 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "f0401ddc-2d66-4cec-a9af-28ed58c72afa": {
+      "ProjectGuid": "f0401ddc-2d66-4cec-a9af-28ed58c72afa",
+      "DisplayName": "GrupoBIOS_PEDWEB.PWA.NET6",
+      "ColorIndex": 0
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    },
+    "3ddcc858-ccb8-4be2-ad5d-1c8e22563022": {
+      "ProjectGuid": "3ddcc858-ccb8-4be2-ad5d-1c8e22563022",
+      "DisplayName": "GrupoBIOS_PEDWEB.DT",
+      "ColorIndex": 1
+    },
+    "3cd8b481-4044-4d4f-851d-5ed22134860c": {
+      "ProjectGuid": "3cd8b481-4044-4d4f-851d-5ed22134860c",
+      "DisplayName": "GrupoBIOS_PEDWEB.API",
+      "ColorIndex": 2
+    },
+    "e31ce7be-5a5c-4f8f-950d-335bab7d187e": {
+      "ProjectGuid": "e31ce7be-5a5c-4f8f-950d-335bab7d187e",
+      "DisplayName": "GrupoBIOS_PEDWEB.BM",
+      "ColorIndex": 3
+    },
+    "d68c9e72-b706-4d0a-ad80-6ed57d658d0c": {
+      "ProjectGuid": "d68c9e72-b706-4d0a-ad80-6ed57d658d0c",
+      "DisplayName": "GrupoBIOS_PEDWEB.DM",
+      "ColorIndex": 4
+    },
+    "919fd655-f067-4ba2-b932-d926e85dd6b4": {
+      "ProjectGuid": "919fd655-f067-4ba2-b932-d926e85dd6b4",
+      "DisplayName": "Script Documents",
+      "ColorIndex": 5
+    },
+    "bda1151f-198a-4071-8afc-cc8d7d24b3b4": {
+      "ProjectGuid": "bda1151f-198a-4071-8afc-cc8d7d24b3b4",
+      "DisplayName": "GrupoBIOS_PEDWEB.Soportes",
+      "ColorIndex": 6
+    }
+  },
+  "NextColorIndex": 7
+}

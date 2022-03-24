@@ -1,0 +1,12 @@
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.DT\bin\Debug\netstandard2.1\GrupoBIOS_PEDWEB.DT.deps.json
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.DT\bin\Debug\netstandard2.1\GrupoBIOS_PEDWEB.DT.dll
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.DT\bin\Debug\netstandard2.1\GrupoBIOS_PEDWEB.DT.pdb
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.DT\obj\Debug\netstandard2.1\GrupoBIOS_PEDWEB.DT.csproj.AssemblyReference.cache
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.DT\obj\Debug\netstandard2.1\GrupoBIOS_PEDWEB.DT.DataAnnotation_ES.resources
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.DT\obj\Debug\netstandard2.1\GrupoBIOS_PEDWEB.DT.csproj.GenerateResource.cache
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.DT\obj\Debug\netstandard2.1\GrupoBIOS_PEDWEB.DT.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.DT\obj\Debug\netstandard2.1\GrupoBIOS_PEDWEB.DT.AssemblyInfoInputs.cache
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.DT\obj\Debug\netstandard2.1\GrupoBIOS_PEDWEB.DT.AssemblyInfo.cs
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.DT\obj\Debug\netstandard2.1\GrupoBIOS_PEDWEB.DT.csproj.CoreCompileInputs.cache
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.DT\obj\Debug\netstandard2.1\GrupoBIOS_PEDWEB.DT.dll
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.DT\obj\Debug\netstandard2.1\GrupoBIOS_PEDWEB.DT.pdb

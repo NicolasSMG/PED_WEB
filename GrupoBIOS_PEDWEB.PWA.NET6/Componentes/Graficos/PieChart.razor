@@ -1,0 +1,79 @@
+﻿@using ChartJs.Blazor.PieChart
+@using GrupoBIOS_PEDWEB.PWA.NET6.Helpers
+@typeparam TItem
+
+@if (MostrarCargando)
+{
+    <Cargando />
+}
+else
+{
+    @if (_config != null)
+    {
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <Chart Config="_config" Width="500" Height="500"> </Chart>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@code {
+    [Parameter] public bool useDoughnutType { get; set; }
+    [Parameter] public string Titulo { get; set; }
+    [Parameter] public IEnumerable<string> Labels { get; set; }
+    [Parameter] public IEnumerable<TItem> Valores { get; set; }
+    [Parameter] public EventCallback<string> GetCanvasId { get; set; }
+    [Parameter] public long DurationAnimation { get; set; } = 2000;
+    public bool MostrarCargando { get; set; }
+    private PieConfig _config;
+
+    protected async override Task OnInitializedAsync()
+    {
+        MostrarCargando = !MostrarCargando;
+        await Task.Run(() =>
+        {
+            _config = new PieConfig(useDoughnutType: this.useDoughnutType)
+            {
+                 
+                Options = new PieOptions
+                {
+                    
+                    Hover = new Hover()
+                    {
+                        AnimationDuration = DurationAnimation
+                    },
+                    Animation = new ArcAnimation()
+                    {
+                         Duration = DurationAnimation,
+                        AnimateRotate = DurationAnimation == 0 ? false : true
+                    },
+
+                    Responsive = true,
+                    ResponsiveAnimationDuration = (int)DurationAnimation,
+                    MaintainAspectRatio = false,
+                    Title = new OptionsTitle
+                    {
+                        Display = true,
+                        Text = Titulo
+                    },
+                }
+            };
+
+            PieDataset<TItem> dataset = new PieDataset<TItem>(Valores)
+            {
+                BackgroundColor = ChartColors.All.Take(5).Select(ColorUtil.FromDrawingColor).ToArray(),
+                 BorderWidth = 0
+            };
+            _config.Data.Datasets.Add(dataset);
+            _config.Data.Labels.AddRange(Labels);
+        });
+
+        MostrarCargando = !MostrarCargando;
+        StateHasChanged();
+        await GetCanvasId.InvokeAsync(_config.CanvasId);
+    }
+}

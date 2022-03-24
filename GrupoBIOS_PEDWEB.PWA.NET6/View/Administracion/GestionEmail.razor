@@ -1,0 +1,121 @@
+﻿@page "/email"
+@inject RefrescarAppState refrescarAppState
+@inject IMatDialogService MatDialogService
+@inject IGestionEmail_ViewModel GestionEmail_ViewModel
+@attribute [Authorize(Roles = "6,7,8,9")]
+
+@if (GestionEmail_ViewModel.TipoMensajes != null)
+{
+    <div class="form-inline alert  alert-dark" role="alert">
+        <MatH5>Agregar las siguientes etiquetas en caso de querer enviar los datos respectivos:</MatH5>
+        <span>{Usuario},{Pass},{observacionesSolicitud},{MotivoRechazo},{NombreEmpresa},{Nombre_Solicitante},{Nit},{FechaSolicitud},{Pedido},{Detalle Pedido}</span>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <EditForm Model="GestionEmail_ViewModel.TipoMensaje">
+                    <DataAnnotationsValidator />
+                    <h5>Seleccione un tipo de mensaje :</h5>
+                    <br /><br />
+
+                    <select class="form-control" value="@MensajeSeleccionado"
+                        @onchange="@((ChangeEventArgs e) => TipoMensajeHasChanged(e))">
+                        <option value="0">SELECCIONE UN TIPO DE MENSAJE</option>
+                        @if (GestionEmail_ViewModel.TipoMensajes.Any())
+                        {
+                            @foreach (var item in GestionEmail_ViewModel.TipoMensajes)
+                            {
+                                <option value="@item.IdTipo">@item.Tipo</option>
+                            }
+                        }
+                    </select>
+
+                    <br /><br />
+                    <MatButton Outlined="true"> Guardar Cambios </MatButton>
+                </EditForm>
+            </div>
+            <div class="col">
+                <TextEditor @ref="@QuillHtml">
+                    <ToolbarContent>
+                        <select class="ql-header">
+                            <option selected=""></option>
+                            <option value="1"></option>
+                            <option value="2"></option>
+                            <option value="3"></option>
+                            <option value="4"></option>
+                            <option value="5"></option>
+                        </select>
+                        <span class="ql-formats">
+                            <button class="ql-bold"></button>
+                            <button class="ql-italic"></button>
+                            <button class="ql-underline"></button>
+                            <button class="ql-strike"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <select class="ql-color"></select>
+                            <select class="ql-background"></select>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-list" value="ordered"></button>
+                            <button class="ql-list" value="bullet"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-link"></button>
+                        </span>
+                    </ToolbarContent>
+                    <EditorContent>
+                        @if (GestionEmail_ViewModel.MensajeEmail != null)
+                        {
+                            @((MarkupString)GestionEmail_ViewModel.MensajeEmail.Mensaje)
+                        }
+                    </EditorContent>
+                </TextEditor>
+                <br />
+                <MatButton Class="button-principal" Raised="true" Icon="@MatIconNames.Done" />
+                @if (obtener)
+                {
+                    <MatButton Class="button-principal" Raised="true" Icon="@MatIconNames.Find_replace" />
+                }
+
+                <br /><br />
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [CascadingParameter] private Task<AuthenticationState> AuthenticationState { get; set; }
+    [CascadingParameter] public AppState AppState { get; set; }
+    List<string> Fonts = new List<string> { "MSGothic", "Impact", "Courier", "Comic", "Bahnschrift" };
+    TextEditor QuillHtml;
+    string QuillHTMLContent;
+    public bool obtener { get; set; } = true;
+    private AuthenticationState AuthState { get; set; }
+    int MensajeSeleccionado = 0;
+
+    protected async override Task OnInitializedAsync()
+    {
+        AppState.TituloPagina = "Envio de mensajes";
+        await GestionEmail_ViewModel.InicializarViewModel();
+        StateHasChanged();
+    }
+
+    public async void TipoMensajeHasChanged(ChangeEventArgs e)
+    {
+
+        MensajeSeleccionado = int.Parse(e.Value.ToString());
+
+        if (MensajeSeleccionado != 0)
+        {
+            await GestionEmail_ViewModel.ConsultarMensajePredefinido(MensajeSeleccionado);
+            SetHTML();
+            StateHasChanged();
+        }
+    }
+
+    public async Task SetHTML()
+    {
+        await this.QuillHtml.LoadHTMLContent(GestionEmail_ViewModel.MensajeEmail.Mensaje);
+        StateHasChanged();
+    }
+}

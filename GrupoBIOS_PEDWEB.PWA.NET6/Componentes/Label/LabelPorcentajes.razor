@@ -1,0 +1,8 @@
+﻿<label class="@Class">@($"{Value.GetValueOrDefault().ToString($"N{NumeroDecimales}", CultureInfo.InvariantCulture)}%")</label>
+
+
+@code {
+    [Parameter] public double? Value { get; set; }
+    [Parameter] public int NumeroDecimales { get; set; } = 2;
+    [Parameter] public string Class { get; set; } = "UGGValues pr-2";
+}

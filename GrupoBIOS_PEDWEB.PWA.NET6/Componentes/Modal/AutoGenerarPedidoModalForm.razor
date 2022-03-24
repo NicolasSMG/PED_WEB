@@ -1,0 +1,34 @@
+﻿@inject IMatDialogService MatDialogService
+@inject INuevoPedido_ViewModel NuevoPedidoViewModel
+
+
+<MatDialogTitle style="display: flex; align-items: center;">
+    <div style="flex: 1;">Autogenerar Pedido</div>
+    <div @onclick="@(_=>CloseDialog())" style="cursor: pointer;">
+        <MatIcon Icon="@MatIconNames.Close"></MatIcon>
+    </div>
+</MatDialogTitle>
+<MatDialogContent>
+    <MatButton Outlined="true" OnClick="@(() => CargarUltimoPedido())"> Cargar ultimo pedido</MatButton>
+</MatDialogContent>
+<MatDialogActions>
+
+</MatDialogActions>
+
+@code
+{
+    [Parameter]
+    public int Value { get; set; } = 1;
+    [CascadingParameter]
+    public MatDialogReference DialogReference { get; set; }
+
+    async Task CargarUltimoPedido()
+    {
+        await NuevoPedidoViewModel.CargarUltimoPedido();
+    }
+
+    async Task CloseDialog()
+    {
+        DialogReference.Close("Test");
+    }
+}

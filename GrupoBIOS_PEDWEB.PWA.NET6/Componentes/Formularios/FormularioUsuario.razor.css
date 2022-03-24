@@ -1,0 +1,7 @@
+﻿::deep input {
+    text-align: left;
+}
+
+::deep select {
+    width: 100%;
+}

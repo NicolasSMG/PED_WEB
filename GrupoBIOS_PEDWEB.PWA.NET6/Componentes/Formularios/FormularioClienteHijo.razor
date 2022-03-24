@@ -1,0 +1,83 @@
+﻿<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <div class="form-inline alert  alert-dark" role="alert">
+            <div class="form-group mx-sm-2 mb-2">
+                <MatButton Class="button-principal" Raised="true" Link="/AdministrarCliente">Atras</MatButton>
+            </div>
+        </div>
+        <EditForm Model="ClienteHijo" OnValidSubmit="OpenModal">
+            <DataAnnotationsValidator />
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-4 mt-2">
+                        <MatTextField @bind-Value="ClienteHijo.Usuario" HelperTextPersistent="true" Style="width:100%" Label="Usuario"></MatTextField>
+                        <ValidationMessage For="@(()=>ClienteHijo.Usuario)" />
+                    </div>
+                    <div class="col-12 col-lg-4 mt-2">
+                        <MatTextField Type="password"
+                                      @bind-Value="ClienteHijo.Password"
+                                      HelperTextPersistent="true" Style="width:100%" Label="Contraseña"></MatTextField>
+                        <ValidationMessage For="@(()=>ClienteHijo.Password)" />
+                    </div>
+                    <div class="col-12 col-lg-4 mt-2">
+                        <MatTextField @bind-Value="ClienteHijo.Correo" HelperTextPersistent="true" Style="width:100%" Label="Correo solicitante"></MatTextField>
+                        <ValidationMessage For="@(()=>ClienteHijo.Correo)" />
+                    </div>
+
+                    <div class="col-12 col-lg-4 mt-2">
+                        <MatSelect FullWidth="true" Label="Sucursal" @bind-Value="@ClienteHijo.SucursalId_SIESA">
+                            <MatOptionString Value="0"></MatOptionString>
+                            @if (FormularioClienteHijoDTO != null)
+                            {
+                                @foreach (var centroOperativo in FormularioClienteHijoDTO.Sucursales)
+                                {
+                                    <MatOptionString Value="@centroOperativo.Id">@centroOperativo.Descripcion</MatOptionString>
+                                }
+                            }
+                        </MatSelect>
+                    </div>
+                    @if (ClienteHijo.Id != null)
+                    {
+                        <div class="col-12 col-lg-4 mt-2">
+                            <MatCheckbox @bind-Value="@ClienteHijo.Activo">Activo</MatCheckbox>
+                        </div>
+                    }
+                    <div class="col-12 col-lg-4 mt-2">
+                        <MatCheckbox @bind-Value="@ClienteHijo.CambiarContrasena">Forzar cambio de contraseña</MatCheckbox>
+                    </div>
+                    <input type="submit" class="fadeIn fourth" value="Enviar solicitud">
+                    @if (dialogIsOpen)
+                    {
+                        <TerminosYCondicionesModalForm  DialogIsOpen="@dialogIsOpen" Aceptar="OnDataAnnotationsValidate" Regresar="CloseModal" />
+                    }
+
+                </div>
+            </div>
+        </EditForm>
+    </div>
+</div>
+@code {
+    [Parameter] public ClienteHijo ClienteHijo { get; set; }
+    [Parameter] public FormularioClienteHijoDTO FormularioClienteHijoDTO { get; set; }
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+    public bool dialogIsOpen { get; set; } = false;
+    public bool Estado { get; set; } = false;
+
+    protected async Task OnDataAnnotationsValidate()
+    {
+        await OnValidSubmit.InvokeAsync(null);
+        CloseModal();
+    }
+
+    private void CloseModal()
+    {
+        dialogIsOpen = false;
+        StateHasChanged();
+    }
+
+    private void OpenModal()
+    {
+        dialogIsOpen = true;
+    }
+
+}

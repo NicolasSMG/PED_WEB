@@ -1,0 +1,108 @@
+﻿@page "/AdministrarCliente"
+@inject RefrescarAppState refrescarAppState
+@inject IAdministrarCliente_ViewModel administrarCliente_ViewModel
+@if (administrarCliente_ViewModel.Mensaje == "MostrarFormulario")
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-4 mt-2">
+                @if (administrarCliente_ViewModel.AdministrarClienteDTO.ListadoClientes.Count() > 1)
+                {
+                    <MatAutocompleteList Items="@administrarCliente_ViewModel.AdministrarClienteDTO.ListadoClientes.Select(x => x.NombreNit)" TItem="string" Style="width:100%" FullWidth="true" Value="administrarCliente_ViewModel.AdministrarClienteDTO.AdministrarCliente.ClienteNombre" Label="Seleccione un cliente" ValueChanged="@((string value) => ClienteHasChanged(value))" />
+                    @*<MatAutocompleteList Items="@administrarCliente_ViewModel.AdministrarClienteDTO.ListadoClientes.Select(x => x.NombreNit)"  TItem="string" Style="width:100%" FullWidth="true" Value="administrarCliente_ViewModel.AdministrarClienteDTO.ClienteNombre" Label="Seleccione un cliente" ValueChanged="@((string value) => ClienteHasChanged(value))"></MatAutocompleteList>*@
+                }
+
+                @if (administrarCliente_ViewModel.AdministrarClienteDTO.ListadoClientes.Count() == 1)
+                {
+                    <MatTextField @bind-Value="@administrarCliente_ViewModel.AdministrarClienteDTO.AdministrarCliente.ClienteNombre" HelperTextPersistent="true" Style="width:100%" Label="Cliente" ReadOnly="true"></MatTextField>
+                }
+
+            </div>
+            <div class="col-12">
+                <MatAccordion>
+                    <MatExpansionPanel>
+                        <MatExpansionPanelSummary>
+                            <MatExpansionPanelHeader>
+                                Sucursales para pedidos
+                            </MatExpansionPanelHeader>
+                        </MatExpansionPanelSummary>
+                        <MatExpansionPanelDetails>
+                            <SelectorMultipleBotones Seleccionados="@administrarCliente_ViewModel.Seleccionados"
+                                                 NoSeleccionados="@administrarCliente_ViewModel.NoSeleccionados" />
+
+                            <MatButton Disabled="administrarCliente_ViewModel.ActualizandoSucursales" OnClick="@administrarCliente_ViewModel.ActualizarSucursalesOnClick">Actualizar</MatButton>
+                        </MatExpansionPanelDetails>
+                    </MatExpansionPanel>
+
+                    <MatExpansionPanel>
+                        <MatExpansionPanelSummary>
+                            <MatExpansionPanelHeader>
+                                Compañias para pedidos
+                            </MatExpansionPanelHeader>
+                        </MatExpansionPanelSummary>
+                        <MatExpansionPanelDetails>
+                            <TablaResponsive Items="administrarCliente_ViewModel.AdministrarClienteDTO.CompaniasAcceso">
+                                <TableHeader>
+                                    <th style="width: 35%;">Acceso a compañias</th>
+                                </TableHeader>
+                                <RowTemplate>
+                                    <td>@context.Nombre</td>
+                                </RowTemplate>
+                            </TablaResponsive>
+                        </MatExpansionPanelDetails>
+                    </MatExpansionPanel>
+
+                    <MatExpansionPanel>
+                        <MatExpansionPanelSummary>
+                            <MatExpansionPanelHeader>
+                                Clientes hijos
+                            </MatExpansionPanelHeader>
+                        </MatExpansionPanelSummary>
+                        <MatExpansionPanelDetails>
+                            <MatButton Link="@($"AdministrarCliente/NuevoClienteHijo/{administrarCliente_ViewModel.AdministrarClienteDTO.AdministrarCliente.ClienteId}")">Nuevo Cliente Hijo</MatButton>
+                            <TablaResponsive Items="administrarCliente_ViewModel.AdministrarClienteDTO.ClientesHijos">
+                                <TableHeader>
+                                    <th style="width: 35%;">Usuario</th>
+                                    <th style="width: 35%;">Email</th>
+                                    <th style="width: 35%;">Sucursal Asignada</th>
+                                    <th style="width: 35%;">Accion</th>
+                                </TableHeader>
+                                <RowTemplate>
+                                    <td>@context.Usuario</td>
+                                    <td>@context.Correo</td>
+                                    <td>@context.SucursalId_SIESA - @context.SucursalNombre_SIESA</td>
+                                    <td><MatIconButton Icon="@MatIconNames.Edit"  
+                                        Link="@($"AdministrarCliente/ActualizarClienteHijo/{administrarCliente_ViewModel.AdministrarClienteDTO.AdministrarCliente.ClienteId}/{context.Id}")"/></td>
+                                </RowTemplate>
+                            </TablaResponsive>
+                        </MatExpansionPanelDetails>
+                    </MatExpansionPanel>
+                </MatAccordion>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+
+    <Cargando />
+}
+@code {
+    //[Parameter] public int PedidoId { get; set; }
+    [CascadingParameter] public AppState AppState { get; set; }
+    public List<Compania> Companias { get; set; } = new();
+    public List<Cliente> Clientes { get; set; } = new();
+    public Cliente Cliente { get; set; } = new();
+    protected async override Task OnInitializedAsync()
+    {
+        AppState.TituloPagina = "Administrar Cliente";
+        await refrescarAppState.LlamarActualizarContenedoresSuperiores();
+        await administrarCliente_ViewModel.InicializarViewModel();
+    }
+    private async Task ClienteHasChanged( string Cliente)
+    {
+        await administrarCliente_ViewModel.ClienteHasChanged(Cliente);
+        
+    }
+    
+}

@@ -1,0 +1,26 @@
+﻿@inherits CambiarContrasenaComponentBase
+
+<EditForm Model="@CambioContrasena" OnValidSubmit="OnDataAnnotationsValidate">
+    <DataAnnotationsValidator />
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+            @if (!string.IsNullOrEmpty(Logo))
+            {
+                <div class="fadeIn first">
+                    <img src="@Logo" id="icon" alt="Logo ASEL" />
+                </div>
+            }
+
+            <h4>¡Hola @NombreUsuario! , Por favor digita una nueva contraseña.</h4>
+            <br><hr>
+
+            <InputText class="fadeIn second" id="login" @bind-Value="CambioContrasena.Clave" name="Clave" placeholder="Contraseña" />
+            <ValidationMessage For="@(() => CambioContrasena.Clave)" />
+
+            <InputPassword class="fadeIn third" id="password" @bind-Value="CambioContrasena.RepetirClave" name="password" placeholder="Repetir Contraseña" />
+            <ValidationMessage For="@(() => CambioContrasena.RepetirClave)" />
+            <input type="submit" class="fadeIn fourth" value="Iniciar Sesión">
+
+        </div>
+    </div>
+</EditForm>

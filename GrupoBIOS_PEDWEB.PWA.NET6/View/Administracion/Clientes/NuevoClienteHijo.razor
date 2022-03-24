@@ -1,0 +1,26 @@
+﻿@page "/AdministrarCliente/NuevoClienteHijo/{ClienteId:int}"
+@inject RefrescarAppState refrescarAppState
+@inject INuevoClienteHijo_ViewModel nuevoClienteHijo_ViewModel
+@if (nuevoClienteHijo_ViewModel.ClienteHijo != null && nuevoClienteHijo_ViewModel.FormularioClienteHijoDTO != null)
+{
+    <FormularioClienteHijo ClienteHijo="nuevoClienteHijo_ViewModel.ClienteHijo"
+                       FormularioClienteHijoDTO="nuevoClienteHijo_ViewModel.FormularioClienteHijoDTO"
+                       OnValidSubmit="nuevoClienteHijo_ViewModel.GuardarClienteHijo" />
+}
+else
+{
+    <Cargando />
+}
+
+@code {
+    [Parameter] public int ClienteId { get; set; }
+    [CascadingParameter] public AppState AppState { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        AppState.TituloPagina = "Nuevo Cliente Hijo";
+        await refrescarAppState.LlamarActualizarContenedoresSuperiores();
+        nuevoClienteHijo_ViewModel.ClienteId = ClienteId;
+        await nuevoClienteHijo_ViewModel.OnInitializedAsync();
+    }
+    }

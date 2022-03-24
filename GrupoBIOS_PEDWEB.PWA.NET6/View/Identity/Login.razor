@@ -1,0 +1,73 @@
+﻿@page "/"
+@inject NavigationManager NavManager
+@inject IJSRuntime js;
+@inject ILogin_ViewModel loginViewModel
+@inject RefrescarAppState refrescarAppState
+@inject GrupoBIOS_PEDWEB.PWA.Helpers.Interfaces.IMostrarMensajes mostrarmentaje
+
+@if (loginViewModel.Validado == true)
+{
+    <EditForm Model="@loginViewModel.UserInfo" OnValidSubmit="LoginUsuario">
+        <DataAnnotationsValidator />
+        <div class="wrapper fadeInDown">
+            <div id="formContent">
+                @if (!string.IsNullOrEmpty(Logo))
+                {
+                    <div class="fadeIn first">
+                        <img src="@Logo" id="icon" alt="Logo ASEL" />
+                    </div>
+                }
+
+                <InputText class="fadeIn second" id="CedulaCiudadania" @bind-Value="@loginViewModel.UserInfo.CedulaCiudadania" name="cc" placeholder="Cedula Ciudadania" />
+                <ValidationMessage For="@(() => loginViewModel.UserInfo.CedulaCiudadania)" />
+
+                <InputText class="fadeIn second" id="login" @bind-Value="@loginViewModel.UserInfo.NombreUsuario" name="Usuario" placeholder="Usuario" />
+                <ValidationMessage For="@(() => loginViewModel.UserInfo.NombreUsuario)" />
+
+                <InputPassword class="fadeIn third" id="password" @bind-Value="@loginViewModel.UserInfo.Password" name="password" placeholder="Contraseña" />
+                <ValidationMessage For="@(() => loginViewModel.UserInfo.Password)" />
+                <input type="submit" class="fadeIn fourth" value="Iniciar Sesión">
+
+
+                <div id="formFooter">
+                    <a class="underlineHover" href="OlvidoContrasena">Recordar contraseña</a>
+                    <a class="underlineHover" href="nuevasolicitud">Nuevo usuario</a>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+}
+
+@code {
+    [CascadingParameter] private Task<AuthenticationState> AuthenticationState { get; set; }
+    public System.Security.Claims.ClaimsPrincipal usuario { get; set; }
+    protected string Logo;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await refrescarAppState.LlamarActualizarNavBarRoles();
+        await refrescarAppState.LlamarActualizarContenedoresSuperiores();
+
+        var authState = await AuthenticationState;
+        usuario = authState.User;
+
+        if (usuario.Identity.IsAuthenticated)
+        {
+            NavManager.NavigateTo("paginaPrincipal");
+        }
+        else
+        {
+            await loginViewModel.InicializarViewModel();
+        }
+
+        Logo = await js.GetFromLocalStorage("LogoCompañia");
+        StateHasChanged();
+    }
+
+    private async Task LoginUsuario()
+    {
+        await loginViewModel.LoginUsuario();
+        await refrescarAppState.LlamarActualizarNavBarRoles();
+        await refrescarAppState.LlamarActualizarContenedoresSuperiores();
+    }
+}

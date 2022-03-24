@@ -1,0 +1,13 @@
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.Soportes\bin\Debug\netstandard2.1\GrupoBIOS_PEDWEB.Soportes.deps.json
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.Soportes\bin\Debug\netstandard2.1\GrupoBIOS_PEDWEB.Soportes.dll
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.Soportes\bin\Debug\netstandard2.1\GrupoBIOS_PEDWEB.Soportes.pdb
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.Soportes\bin\Debug\netstandard2.1\GrupoBIOS_PEDWEB.DT.dll
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.Soportes\bin\Debug\netstandard2.1\GrupoBIOS_PEDWEB.DT.pdb
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.Soportes\obj\Debug\netstandard2.1\GrupoBIOS_PEDWEB.Soportes.csproj.AssemblyReference.cache
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.Soportes\obj\Debug\netstandard2.1\GrupoBIOS_PEDWEB.Soportes.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.Soportes\obj\Debug\netstandard2.1\GrupoBIOS_PEDWEB.Soportes.AssemblyInfoInputs.cache
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.Soportes\obj\Debug\netstandard2.1\GrupoBIOS_PEDWEB.Soportes.AssemblyInfo.cs
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.Soportes\obj\Debug\netstandard2.1\GrupoBIOS_PEDWEB.Soportes.csproj.CoreCompileInputs.cache
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.Soportes\obj\Debug\netstandard2.1\GrupoBIOS_PEDWEB.Soportes.csproj.CopyComplete
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.Soportes\obj\Debug\netstandard2.1\GrupoBIOS_PEDWEB.Soportes.dll
+C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.Soportes\obj\Debug\netstandard2.1\GrupoBIOS_PEDWEB.Soportes.pdb

@@ -1,0 +1,53 @@
+﻿@page "/Pedido/Editar/{PedidoId:int}"
+@inject  IEditarPedido_ViewModel EditarPedido_ViewModel
+@inject NavigationManager navigationManager
+@inject RefrescarAppState refrescarAppState
+@*@attribute [Authorize(Roles = "1")]*@
+
+@if (EditarPedido_ViewModel.Mensaje != null)
+{
+    @if (EditarPedido_ViewModel.Mensaje == "MostrarFormulario")
+    {
+
+
+        <FormularioPedido PedidoDTO="EditarPedido_ViewModel.ActualizarPedidoDTO.PedidoDTO"
+                          FormularioPedidoDTO="EditarPedido_ViewModel.ActualizarPedidoDTO.FormularioPedidoDTO"
+                  OnValidSubmit="(x) => EditarPedido_ViewModel.ActualizarPedido(x)"
+                          ActualizarClienteId="(string x) => EditarPedido_ViewModel.ClienteHasChanged(x) "
+                          ActualizarSucursalId="(string x) => EditarPedido_ViewModel.SucursalHasChanged(x)"
+                          CargarUltimoPedido="x => EditarPedido_ViewModel.CargarUltimoPedido()"
+                          DescripcionDTO="EditarPedido_ViewModel.DescripcionDTO"
+                          ObtenerNombreSucursal="(string x) => EditarPedido_ViewModel.ConsultarNombreSucursal(x)"
+                          NombreSucursal="EditarPedido_ViewModel.NombreSucursalDTO"
+                          NombrePuntoEnvio="(NombrePuntoEnvioDTO value) => EditarPedido_ViewModel.ConsultarNombrePuntoEnvio(value)"
+                          EditarSucursalyPuntoEnvio="false" />
+
+
+
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            <h5> @EditarPedido_ViewModel.Mensaje</h5>
+        </div>
+    }
+}
+else
+{
+    <Cargando />
+}
+@code {
+    [Parameter] public int PedidoId { get; set; }
+    public string VisualizarDetallePedido { get; set; }
+    [CascadingParameter] public AppState AppState { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        AppState.TituloPagina = "Editar Pedido";
+        await refrescarAppState.LlamarActualizarContenedoresSuperiores();
+        await EditarPedido_ViewModel.InicializarViewModel(PedidoId);
+    }
+
+
+
+}

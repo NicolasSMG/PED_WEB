@@ -1,0 +1,243 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property._SupportedPlatformList = browser
+build_property.EnableSingleFileAnalyzer = 
+build_property.EnableTrimAnalyzer = true
+build_property.IncludeAllContentForSelfExtract = 
+build_property.RootNamespace = GrupoBIOS_PEDWEB.PWA.NET6
+build_property.RootNamespace = GrupoBIOS_PEDWEB.PWA.NET6
+build_property.ProjectDir = C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.PWA.NET6\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\Admin\source\Workspaces\GrupoBIOS_PEDWEB\GrupoBIOS_PEDWEB.PWA.NET6
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Cargando.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcQ2FyZ2FuZG8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Filtrar/FiltrarPedidos.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcRmlsdHJhclxGaWx0cmFyUGVkaWRvcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Formularios/AdministracionPerfilesComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcRm9ybXVsYXJpb3NcQWRtaW5pc3RyYWNpb25QZXJmaWxlc0NvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Formularios/AdministradorPermisosPerfilComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcRm9ybXVsYXJpb3NcQWRtaW5pc3RyYWRvclBlcm1pc29zUGVyZmlsQ29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Formularios/CambiarContrasenaComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcRm9ybXVsYXJpb3NcQ2FtYmlhckNvbnRyYXNlbmFDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Formularios/FormularioClienteHijo.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcRm9ybXVsYXJpb3NcRm9ybXVsYXJpb0NsaWVudGVIaWpvLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Formularios/FormularioInformeGeneral.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcRm9ybXVsYXJpb3NcRm9ybXVsYXJpb0luZm9ybWVHZW5lcmFsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Graficos/BarrasChar.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcR3JhZmljb3NcQmFycmFzQ2hhci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Graficos/BarrasChart2.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcR3JhZmljb3NcQmFycmFzQ2hhcnQyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Graficos/HorizontalChart.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcR3JhZmljb3NcSG9yaXpvbnRhbENoYXJ0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Graficos/PieChart.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcR3JhZmljb3NcUGllQ2hhcnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Input/InputCelular.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcSW5wdXRcSW5wdXRDZWx1bGFyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Input/InputNumero.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcSW5wdXRcSW5wdXROdW1lcm8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Input/InputPassword.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcSW5wdXRcSW5wdXRQYXNzd29yZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Label/LabelMoneda.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcTGFiZWxcTGFiZWxNb25lZGEucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Label/LabelNumero.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcTGFiZWxcTGFiZWxOdW1lcm8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Label/LabelPorcentajes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcTGFiZWxcTGFiZWxQb3JjZW50YWplcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Login/EnlacesLogin.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcTG9naW5cRW5sYWNlc0xvZ2luLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Modal/AutoGenerarPedidoModalForm.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcTW9kYWxcQXV0b0dlbmVyYXJQZWRpZG9Nb2RhbEZvcm0ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Modal/GuardarCompaniaModalForm.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcTW9kYWxcR3VhcmRhckNvbXBhbmlhTW9kYWxGb3JtLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Modal/TerminosYCondicionesModalForm.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcTW9kYWxcVGVybWlub3NZQ29uZGljaW9uZXNNb2RhbEZvcm0ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Tabla/Paginacion.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcVGFibGFcUGFnaW5hY2lvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Shared/SurveyPrompt.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/View/Administracion/Clientes/ActualizarClienteHijo.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xBZG1pbmlzdHJhY2lvblxDbGllbnRlc1xBY3R1YWxpemFyQ2xpZW50ZUhpam8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/View/Administracion/Clientes/AdministrarCliente.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xBZG1pbmlzdHJhY2lvblxDbGllbnRlc1xBZG1pbmlzdHJhckNsaWVudGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/View/Administracion/Clientes/ConfirmarSolicitudes.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xBZG1pbmlzdHJhY2lvblxDbGllbnRlc1xDb25maXJtYXJTb2xpY2l0dWRlcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/View/Administracion/Clientes/NuevoClienteHijo.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xBZG1pbmlzdHJhY2lvblxDbGllbnRlc1xOdWV2b0NsaWVudGVIaWpvLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/View/Administracion/GestionEmail.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xBZG1pbmlzdHJhY2lvblxHZXN0aW9uRW1haWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/View/Administracion/Perfiles/AdministracionPerfiles.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xBZG1pbmlzdHJhY2lvblxQZXJmaWxlc1xBZG1pbmlzdHJhY2lvblBlcmZpbGVzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/View/Administracion/Perfiles/AdministracionPermisosPerfil.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xBZG1pbmlzdHJhY2lvblxQZXJmaWxlc1xBZG1pbmlzdHJhY2lvblBlcm1pc29zUGVyZmlsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/View/Administracion/Usuarios/ActualizarUsuario.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xBZG1pbmlzdHJhY2lvblxVc3Vhcmlvc1xBY3R1YWxpemFyVXN1YXJpby5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/View/Administracion/Usuarios/CrearUsuario.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xBZG1pbmlzdHJhY2lvblxVc3Vhcmlvc1xDcmVhclVzdWFyaW8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/View/Administracion/Usuarios/IndiceUsuarios.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xBZG1pbmlzdHJhY2lvblxVc3Vhcmlvc1xJbmRpY2VVc3Vhcmlvcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/View/Administracion/VariablesConexionSiesa.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xBZG1pbmlzdHJhY2lvblxWYXJpYWJsZXNDb25leGlvblNpZXNhLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/View/Graficas/DiagramaGrafico.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xHcmFmaWNhc1xEaWFncmFtYUdyYWZpY28ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/View/Identity/Logout.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xJZGVudGl0eVxMb2dvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/View/Identity/PaginaPrincipal.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xJZGVudGl0eVxQYWdpbmFQcmluY2lwYWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/View/InformeGeneral/InformeGeneral.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xJbmZvcm1lR2VuZXJhbFxJbmZvcm1lR2VuZXJhbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/View/Pedidos/EditarPedido.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xQZWRpZG9zXEVkaXRhclBlZGlkby5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/View/Pedidos/ImportarPedidoExcel.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xQZWRpZG9zXEltcG9ydGFyUGVkaWRvRXhjZWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/View/Pedidos/ListaPedidos.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xQZWRpZG9zXExpc3RhUGVkaWRvcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/View/Pedidos/NuevoPedido.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xQZWRpZG9zXE51ZXZvUGVkaWRvLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Formularios/FormularioPedido.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcRm9ybXVsYXJpb3NcRm9ybXVsYXJpb1BlZGlkby5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-5lzsqwp9p4
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Formularios/FormularioUsuario.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcRm9ybXVsYXJpb3NcRm9ybXVsYXJpb1VzdWFyaW8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-rgyj38hpt9
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Formularios/TerminosYCondicionesComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcRm9ybXVsYXJpb3NcVGVybWlub3NZQ29uZGljaW9uZXNDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-2wcz0rqdlh
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Modal/LiquidacionPedidoModalForm.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcTW9kYWxcTGlxdWlkYWNpb25QZWRpZG9Nb2RhbEZvcm0ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-tdnelaq4kn
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/SelectorMultiple/SelectorMultipleBotones.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcU2VsZWN0b3JNdWx0aXBsZVxTZWxlY3Rvck11bHRpcGxlQm90b25lcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-v7bk262rub
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Componentes/Tabla/TablaResponsive.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcVGFibGFcVGFibGFSZXNwb25zaXZlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-gs6dqztsus
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-ons2hv412a
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-tsmjpy3bhk
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/View/CambioContrasena.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xDYW1iaW9Db250cmFzZW5hLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-p9bisohydi
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/View/Identity/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xJZGVudGl0eVxMb2dpbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-g99n8yr5k7
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/View/Identity/OlvidoContrasena.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xJZGVudGl0eVxPbHZpZG9Db250cmFzZW5hLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-onfquhdv22
+
+[C:/Users/Admin/source/Workspaces/GrupoBIOS_PEDWEB/GrupoBIOS_PEDWEB.PWA.NET6/View/NuevaSolicitud.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xOdWV2YVNvbGljaXR1ZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-wbod15jjjh

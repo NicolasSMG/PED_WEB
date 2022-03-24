@@ -1,0 +1,59 @@
+﻿@inject IMatDialogService MatDialogService
+@inject IGestionCompanias_ViewModel IGestionCompanias_ViewModel
+@inject IJSRuntime js;
+@inject GrupoBIOS_PEDWEB.PWA.Helpers.Interfaces.IMostrarMensajes MostrarMensajes
+
+@inject NavigationManager NavigationManager
+<MatDialog @bind-IsOpen="@DialogIsOpen" Style="@("max-width: 100%;")">
+    <MatDialogTitle style="display: flex; align-items: center;">
+        <div style="flex: 1;">Terminos y Condiciones</div>
+        <div @onclick="@(_=>CloseDialog())" style="cursor: pointer;">
+            <MatIcon Icon="@MatIconNames.Close"></MatIcon>
+        </div>
+    </MatDialogTitle>
+    <MatDialogContent>
+        @if (TerminosYCondiciones != null)
+        {
+            @((MarkupString)TerminosYCondiciones.TerminosYCondiciones)
+        }
+        else
+        {
+            <Cargando />
+        }
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton Dense="true" Icon="@MatIconNames.Check" @onclick="AceptarTerminos">Aceptar</MatButton>
+        <MatButton Dense="true" Icon="@MatIconNames.Cancel" @onclick="CloseDialog">Regresar</MatButton>
+    </MatDialogActions>
+</MatDialog>
+@code
+{
+    [Parameter] public bool DialogIsOpen { get; set; }
+    [Parameter] public EventCallback Aceptar { get; set; }
+    [Parameter] public EventCallback Regresar { get; set; }
+    [CascadingParameter] public MatDialogReference? DialogReference { get; set; }
+    public TerminosCondiciones TerminosYCondiciones { get; set; }
+    public TextEditor QuillHtml { get; set; } = new();
+    //TextEditor QuillHtml;
+    string QuillHTMLContent;
+    protected override async Task OnInitializedAsync()
+    {
+        var companiaId = await js.GetFromLocalStorage("CompañiaId");
+        if (companiaId != null)
+        {
+            TerminosYCondiciones = await IGestionCompanias_ViewModel.ConsultarTerminosYCondiciones(int.Parse(companiaId));
+            StateHasChanged();
+        }
+    }
+    async Task CloseDialog()
+    {
+        await Regresar.InvokeAsync();
+        StateHasChanged();
+    }
+
+    async Task AceptarTerminos()
+    {
+        await Aceptar.InvokeAsync();
+        StateHasChanged();
+    }
+}

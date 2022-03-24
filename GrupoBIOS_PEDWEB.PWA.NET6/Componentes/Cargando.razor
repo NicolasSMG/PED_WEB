@@ -1,0 +1,15 @@
+﻿@using MatBlazor
+
+@if (CargandoNuevo == null)
+{
+
+    <div class="d-flex justify-content-center">
+        <MatProgressCircle Indeterminate="true" Size="MatProgressCircleSize.Large" />
+    </div>
+}
+else
+{
+    @CargandoNuevo
+}
+
+@code { [Parameter] public RenderFragment CargandoNuevo { get; set; } }

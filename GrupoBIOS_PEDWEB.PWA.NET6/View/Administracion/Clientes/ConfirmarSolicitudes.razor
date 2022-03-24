@@ -1,0 +1,325 @@
+﻿@page "/ConfirmarSolicitudes"
+@inject IConfirmarSolicitudes_ViewModel confirmarSolicitudes_ViewModel
+@inject RefrescarAppState refrescarAppState
+
+<div class="row">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        @if (confirmarSolicitudes_ViewModel.Solicitudes == null)
+        {
+            <Cargando></Cargando>
+        }
+        else if (confirmarSolicitudes_ViewModel.Solicitudes.Count == 0)
+        {
+            <h5>No se encuentran solicitudes para mostrar</h5>
+        }
+        else
+        {
+            <MatTable Items="@confirmarSolicitudes_ViewModel.Solicitudes" Striped="true" class="mat-elevation-z5" ShowPaging="false" PageSize="500">
+                <MatTableHeader>
+                    <th style="width: 15%;">Fecha</th>
+                    <th style="width: 20%;">NIT</th>
+                    <th style="width: 20%;">Razon Social</th>
+                    <th style="width: 20%;">Cedula Solicitante</th>
+                    <th style="width: 20%;">Nombre Solicitante</th>
+                    <th style="width: 5%;"></th>
+                </MatTableHeader>
+                <MatTableRow>
+                    <td>@context.FechaSolicitud</td>
+                    <td>@context.Nit</td>
+                    <td>@context.NombreEmpresa</td>
+                    <td>@context.CedulaSolicitante</td>
+                    <td>@context.NombreSolicitante</td>
+                    <td>
+                        <MatButton Dense="true" OnClick="@(_=>InformacionSolicitud(context))" Icon="@MatIconNames.Info"></MatButton>
+                    </td>
+                </MatTableRow>
+            </MatTable>
+
+            <Paginacion PaginaActual="confirmarSolicitudes_ViewModel.PaginaActual"
+                    PaginaSeleccionada="confirmarSolicitudes_ViewModel.PaginaSeleccionadaAsync"
+                    PaginasTotales="confirmarSolicitudes_ViewModel.PaginasTotales"
+                    RegistrosTotales="confirmarSolicitudes_ViewModel.RegistrosTotales"
+                    TipoRegistros="solicitudes"></Paginacion>
+
+        }
+    </div>
+
+    @if (DetalleSolicitud != null)
+    {
+
+        <EditForm Model="DetalleSolicitud">
+            <DataAnnotationsValidator />
+            <MatDialog @bind-IsOpen="@MostrarDetalleSolicitud">
+                <MatDialogTitle>@($"Solicitud N° {DetalleSolicitud.Id}")</MatDialogTitle>
+                <MatDialogContent>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 col-lg-6 mt-1">
+                                CentroOperativo
+                            </div>
+                            <div class="col-12 col-lg-6 mt-1">
+                                <MatSelect Disabled="!HabilitarCentroOperativo" ValueChanged="@(async (string x) => await ConsultarSucursalesPorCentroOperativoyTercero(x))" FullWidth="true" Label="Centro Operativo" Value="DetalleSolicitud.CentroOperativo_SIESA">
+                                    <MatOptionString Value="0"></MatOptionString>
+                                    @if (confirmarSolicitudes_ViewModel.CentrosOperativos != null)
+                                    {
+                                    @foreach (var centroOperativo in confirmarSolicitudes_ViewModel.CentrosOperativos)
+                                        {
+                                        <MatOptionString Value="@centroOperativo.Id">@centroOperativo.Nombre</MatOptionString>
+                                        }
+                                    }
+                            </MatSelect>
+                        </div>
+                        <div class="col-12 col-lg-6 mt-1">
+                            Nit
+                        </div>
+                        <div class="col-12 col-lg-6 mt-1">
+                            @DetalleSolicitud.Nit
+                        </div>
+                        <div class="col-12 col-lg-6 mt-1">
+                            Nombre Empresa
+                        </div>
+                        <div class="col-12 col-lg-6 mt-1">
+                            @DetalleSolicitud.NombreEmpresa
+                        </div>
+                        <div class="col-12 col-lg-6 mt-1">
+                            Cedula Solicitante
+                        </div>
+                        <div class="col-12 col-lg-6 mt-1">
+                            @DetalleSolicitud.CedulaSolicitante
+                        </div>
+                        <div class="col-12 col-lg-6 mt-1">
+                            Usuario
+                        </div>
+                        <div class="col-12 col-lg-6 mt-1">
+                            <InputText disabled="@(DetalleSolicitud.ClienteIdGenerado != null)" style="width:100%" @bind-Value="@DetalleSolicitud.Usuario" name="cc" placeholder="Usuario" />
+                        </div>
+                        <div class="col-12 col-lg-6 mt-1">
+                            Correo Solicitante
+                        </div>
+                        <div class="col-12 col-lg-6 mt-1">
+                            <InputText disabled="@(DetalleSolicitud.ClienteIdGenerado != null)" style="width:100%" @bind-Value="@DetalleSolicitud.CorreoSolicitante" name="cc" placeholder="Correo solicitante" />
+                        </div>
+                        <div class="col-12 mt-1">
+                            Observaciones
+                        </div>
+                        <div class="col-12">
+                            @DetalleSolicitud.Observaciones
+                            @(DetalleSolicitud.ClienteIdGenerado != null ? "El cliente de esta solicitud ya ha sido creado. Aprobar las sucursales de pedidos." : "")
+                        </div>
+                        @if (DetalleSolicitud.RowIdSiesa == null)
+                            {
+                                <div class="col-12">
+                                    <div class="alert alert-danger" role="alert">
+                                        No se encuentra informacion para el NIT ingresado en SIESA...
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-12">
+                                    @if (confirmarSolicitudes_ViewModel.SucursalesCliente != null)
+                                        @if (confirmarSolicitudes_ViewModel.SucursalesCliente.Any())
+                                        {
+                                            <InputSelect class="form-control"
+                                         Value="SucursalSeleccionada"
+                                         ValueExpression="@(() => SucursalSeleccionada)"
+                                         ValueChanged="@((string value) => ObtenerPuntosEnvio(value))">
+                                                <option value="0" selected>Seleccione sucursal</option>
+                                                @foreach (var item in confirmarSolicitudes_ViewModel.SucursalesCliente)
+                                {
+                                    <option value="@item.Id">@item.Descripcion</option>
+                                }
+                            </InputSelect>
+                                        }
+                                        else
+                                        {
+                                            <div class="alert alert-primary" role="alert">
+                                                Cargando sucursales del cliente...
+                                            </div>
+                                        }
+                                </div>
+                                <div class="col-11">
+                                    @if (confirmarSolicitudes_ViewModel.PuntosEnvio != null)
+                                        @if (confirmarSolicitudes_ViewModel.PuntosEnvio.Any())
+                                        {
+                                            <InputSelect class="form-control"
+                                         ValueExpression="@(() => PuntoEnvioSeleccionado)"
+                                         Value="PuntoEnvioSeleccionado"
+                                         ValueChanged="@((string x)=> PuntoEnvioSeleccionado = x)">
+                                                <option value="0" selected>Seleccione punto de envio</option>
+                                                @foreach (var item in confirmarSolicitudes_ViewModel.PuntosEnvio)
+                                {
+                                    <option value="@item.Id">@item.Descripcion</option>
+                                }
+                            </InputSelect>
+                                        }
+                                        else
+                                        {
+                                            <div class="alert alert-primary" role="alert">
+                                                Cargando puntos de envio del cliente...
+                                            </div>
+                                        }
+                                </div>
+                                <div class="col-1">
+                                    <MatButton Dense="true" Icon="@MatIconNames.Add" OnClick="@(() => AgregarPuntoEnvioSucursal())"></MatButton>
+                                </div>
+                                <div class="col-12">
+                                    <TablaResponsive Items="@confirmarSolicitudes_ViewModel.PuntosEnvioSucursal" Context="puntoEnvioSucursal">
+                                        <TableHeader>
+                                            <th><span>Sucursal</span></th>
+                                            <th><span>Punto de envio</span></th>
+                                            <th><span></span></th>
+                                        </TableHeader>
+                                        <RowTemplate>
+                                            <td>@puntoEnvioSucursal.SucursalNombre</td>
+                                            <td>@puntoEnvioSucursal.PuntoEnvio_SIESA</td>
+                                            <td>
+                                                <MatButton Dense="true"
+                                                   Icon="@MatIconNames.Delete"
+                                                   OnClick="@(()=> confirmarSolicitudes_ViewModel.PuntosEnvioSucursal.Remove(puntoEnvioSucursal))" />
+                                            </td>
+                                        </RowTemplate>
+                                    </TablaResponsive>
+                                </div>
+                            }
+                            <div class="col-6">
+                                @if (DetalleSolicitud.RowIdSiesa != null)
+                                {
+                                    <MatButton Disabled="!confirmarSolicitudes_ViewModel.PuntosEnvioSucursal.Any()" OnClick="@Aprobar" Dense="true">Aprobar</MatButton>
+                                }
+                            </div>
+                            <div class="col-6">
+                                <MatButton Dense="true" OnClick="MostrarRechazarSolicitud">Rechazar</MatButton>
+                            </div>
+
+                        </div>
+                    </div>
+                </MatDialogContent>
+            </MatDialog>
+
+            <MatDialog @bind-IsOpen="@RechazarSolicitud">
+                <MatDialogTitle>@($"Rechazar solicitud N° {DetalleSolicitud.Id}")</MatDialogTitle>
+                <MatDialogContent Style="@("width: 450px;")">
+                    <div class="col-12 ">
+                        <TextEditor @ref="@QuillHtml">
+                            <ToolbarContent>
+                                <select class="ql-header">
+                                    <option selected=""></option>
+                                    <option value="1"></option>
+                                    <option value="2"></option>
+                                    <option value="3"></option>
+                                    <option value="4"></option>
+                                    <option value="5"></option>
+                                </select>
+                                <span class="ql-formats">
+                                    <button class="ql-bold"></button>
+                                    <button class="ql-italic"></button>
+                                    <button class="ql-underline"></button>
+                                    <button class="ql-strike"></button>
+                                </span>
+                                <span class="ql-formats">
+                                    <select class="ql-color"></select>
+                                    <select class="ql-background"></select>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-list" value="ordered"></button>
+                                    <button class="ql-list" value="bullet"></button>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-link"></button>
+                                </span>
+                            </ToolbarContent>
+                            <EditorContent>
+                            </EditorContent>
+                        </TextEditor>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-5">
+                                <MatButton OnClick="@Rechazar" Dense="true">Aceptar</MatButton>
+                            </div>
+                            <div class="col-5">
+                                <MatButton Dense="true" OnClick=@(()=> RechazarSolicitud = false)>Cancelar</MatButton>
+                            </div>
+                        </div>
+                    </div>
+                </MatDialogContent>
+            </MatDialog>
+        </EditForm>
+    }
+</div>
+@code {
+    [CascadingParameter] private Task<AuthenticationState> AuthenticationState { get; set; }
+    [CascadingParameter] public AppState AppState { get; set; }
+    public SolicitudCliente DetalleSolicitud { get; set; } = new();
+    public string SucursalSeleccionada { get; set; }
+    public string PuntoEnvioSeleccionado { get; set; }
+    public bool MostrarDetalleSolicitud { get; set; }
+    public bool HabilitarCentroOperativo { get; set; }
+    public bool RechazarSolicitud { get; set; }
+    TextEditor QuillHtml;
+    private AuthenticationState AuthState { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        AppState.TituloPagina = "Confirmar solicitudes";
+        await refrescarAppState.LlamarActualizarContenedoresSuperiores();
+        AuthState = await AuthenticationState;
+        var usuario = AuthState.User;
+        HabilitarCentroOperativo = usuario.IsInRole("15");
+        await confirmarSolicitudes_ViewModel.Cargarsolicitudes();
+    }
+    private async Task MostrarRechazarSolicitud()
+    {
+        await this.QuillHtml.LoadHTMLContent(DetalleSolicitud.ObservacionesRechazo);
+        MostrarDetalleSolicitud = false;
+        RechazarSolicitud = true;
+    }
+    private async Task InformacionSolicitud(SolicitudCliente SolicitudCliente)
+    {
+        DetalleSolicitud = SolicitudCliente;
+        MostrarDetalleSolicitud = true;
+        await ConsultarSucursalesPorCentroOperativoyTercero();
+        StateHasChanged();
+    }
+    private async Task ConsultarSucursalesPorCentroOperativoyTercero(string CentroOperativoId = "")
+    {
+        SucursalSeleccionada = null;
+        PuntoEnvioSeleccionado = null;
+        confirmarSolicitudes_ViewModel.PuntosEnvio = null;
+        confirmarSolicitudes_ViewModel.SucursalesCliente = null;
+        confirmarSolicitudes_ViewModel.PuntosEnvioSucursal = new();
+        await confirmarSolicitudes_ViewModel.ConsultarSucursalesPorCentroOperativoyTercero(DetalleSolicitud);
+    }
+    private async Task Rechazar()
+    {
+        DetalleSolicitud.ObservacionesRechazo = await this.QuillHtml.GetHTML();
+        await confirmarSolicitudes_ViewModel.Denegar(DetalleSolicitud);
+        RechazarSolicitud = false;
+    }
+    private async Task Aprobar()
+    {
+        await confirmarSolicitudes_ViewModel.Aprobar(DetalleSolicitud);
+        MostrarDetalleSolicitud = false;
+    }
+    private async Task ObtenerPuntosEnvio(string sucursalSeleccionada)
+    {
+        SucursalSeleccionada = sucursalSeleccionada;
+        if (!string.IsNullOrEmpty(sucursalSeleccionada))
+        {
+
+            await confirmarSolicitudes_ViewModel.ObtenerPuntosEnvio(DetalleSolicitud, sucursalSeleccionada);
+        }
+        else
+        {
+            confirmarSolicitudes_ViewModel.PuntosEnvio = null;
+        }
+        StateHasChanged();
+    }
+    public async Task AgregarPuntoEnvioSucursal()
+    {
+        await confirmarSolicitudes_ViewModel.AgregarPuntoEnvioSucursal(SucursalSeleccionada, PuntoEnvioSeleccionado);
+        StateHasChanged();
+    }
+
+}

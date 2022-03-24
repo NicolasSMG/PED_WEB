@@ -1,0 +1,155 @@
+﻿@using GrupoBIOS_PEDWEB.PWA.NET6.Componentes.Formularios
+@inherits FormularioUsuarioBase
+@inject Microsoft.AspNetCore.Components.WebAssembly.Hosting.IWebAssemblyHostEnvironment HostEnvironment
+<EditForm Model="UsuarioDTO.Usuario" OnValidSubmit="OnDataAnnotationsValidate">
+    <DataAnnotationsValidator />
+    <div class="container">
+        <div class="row">
+            @if (HostEnvironment.Environment == "Development")
+            {
+                <div class="col-12 col-lg-4 mt-2">
+                    <label>Tipo de usuario:</label>
+                    <div>
+                        <InputSelectNumber class="form-control" @bind-Value="UsuarioDTO.Usuario.TipoUsuarioId">
+                            <option value="0" selected>Seleccione Tipo de usuario</option>
+                            @foreach (var item in FormularioUsuarioDTO.TiposUsuario)
+                            {
+                                <option value="@item.Id">@item.Tipo</option>
+                            }
+                        </InputSelectNumber>
+                        <ValidationMessage For="@(() => UsuarioDTO.Usuario.TipoUsuarioId)" />
+                    </div>
+                </div>
+            }
+            <div class="col-12 col-lg-4 mt-2">
+                <label>Cedula:</label>
+                <div>
+                    <InputNumero class="form-control"
+                                 NumeroDecimales="0"
+                                 @bind-Value="@UsuarioDTO.Usuario.Cedula" />
+                    <ValidationMessage For="@(() => UsuarioDTO.Usuario.Cedula)" />
+                </div>
+            </div>
+            <div class="col-12 col-lg-4 mt-2">
+                <label>Usuario:</label>
+                <div>
+                    <input type="text" @ref="NombreUsuarioInput"
+                           @bind="UsuarioDTO.Usuario.NombreUsuario"
+                           class="form-control"
+                           @onfocusout="() => BuscarUsuarioAD(UsuarioDTO.Usuario.NombreUsuario)" />
+                    <ValidationMessage For="@(() => UsuarioDTO.Usuario.NombreUsuario)" />
+                </div>
+            </div>
+            @if (HostEnvironment.Environment == "Development")
+            {
+                <div class="col-12 col-lg-4 mt-2">
+                    <label>Contraseña:</label>
+                    <div>
+                        <InputPassword disabled="@(UsuarioDTO.Usuario.TipoUsuarioId == 2)" @bind-Value="UsuarioDTO.Usuario.Password"
+                                   class="form-control" />
+                        <ValidationMessage For="@(() => UsuarioDTO.Usuario.Password)" />
+                    </div>
+                </div>
+            }
+            <div class="col-12 col-lg-4 mt-2">
+                <label>Email:</label>
+                <div>
+                    <InputText @bind-Value="UsuarioDTO.Usuario.Email"
+                               class="form-control" />
+                    <ValidationMessage For="@(() => UsuarioDTO.Usuario.Email)" />
+                </div>
+            </div>
+            <div class="col-12  col-lg-4 mt-2">
+                <label>
+                    Rol:
+                </label>
+                <InputSelectNumber class="form-control" @bind-Value="UsuarioDTO.Usuario.RolId">
+                    <option value="0" selected>Seleccione Rol</option>
+                    @foreach (var item in FormularioUsuarioDTO.Roles)
+                    {
+                        <option value="@item.Id">@item.Nombre</option>
+                    }
+                </InputSelectNumber>
+                <ValidationMessage For="@(() => UsuarioDTO.Usuario.RolId)" />
+            </div>
+            <div class="col-12  col-lg-4 mt-2">
+                <label>
+                    Centro Operativo:
+                </label>
+                <InputSelect TValue="string" class="form-control" @bind-Value="UsuarioDTO.Usuario.CentroOperativoId">
+                    <option value="0" selected>Seleccione C.Operativo</option>
+                    @foreach (var item in CentrosOperativos)
+                    {
+                        <option value="@item.Id">@item.Nombre</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => UsuarioDTO.Usuario.CentroOperativoId)" />
+            </div>
+            <div class="col-12 col-lg-4 mt-2">
+                <label>Primer Nombre:</label>
+                <div>
+                    <InputText @bind-Value="UsuarioDTO.Usuario.PrimerNombre"
+                               class="form-control"
+                               @onfocusout="() => UsuarioDTO.Usuario.PrimerNombre = UsuarioDTO.Usuario.PrimerNombre != null ? UsuarioDTO.Usuario.PrimerNombre.ToUpper() : UsuarioDTO.Usuario.PrimerNombre" />
+                    <ValidationMessage For="@(() => UsuarioDTO.Usuario.PrimerNombre)" />
+                </div>
+            </div>
+            <div class="col-12 col-lg-4 mt-2">
+                <label>Segundo Nombre:</label>
+                <div>
+                    <InputText @bind-Value="UsuarioDTO.Usuario.SegundoNombre"
+                               class="form-control"
+                               @onfocusout="() => UsuarioDTO.Usuario.SegundoNombre = UsuarioDTO.Usuario.SegundoNombre != null ? UsuarioDTO.Usuario.SegundoNombre.ToUpper() : UsuarioDTO.Usuario.SegundoNombre" />
+                    <ValidationMessage For="@(() => UsuarioDTO.Usuario.SegundoNombre)" />
+                </div>
+            </div>
+            <div class="col-12 col-lg-4 mt-2">
+                <label>Primer Apellido:</label>
+                <div>
+                    <InputText @bind-Value="UsuarioDTO.Usuario.PrimerApellido"
+                               class="form-control"
+                               @onfocusout="() => UsuarioDTO.Usuario.PrimerApellido = UsuarioDTO.Usuario.PrimerApellido != null ? UsuarioDTO.Usuario.PrimerApellido.ToUpper() : UsuarioDTO.Usuario.PrimerApellido" />
+                    <ValidationMessage For="@(() => UsuarioDTO.Usuario.PrimerApellido)" />
+                </div>
+            </div>
+            <div class="col-12 col-lg-4 mt-2">
+                <label>Segundo Apellido:</label>
+                <div>
+                    <InputText @bind-Value="UsuarioDTO.Usuario.SegundoApellido"
+                               class="form-control"
+                               @onfocusout="() => UsuarioDTO.Usuario.SegundoApellido = UsuarioDTO.Usuario.SegundoApellido != null ? UsuarioDTO.Usuario.SegundoApellido.ToUpper() : UsuarioDTO.Usuario.SegundoApellido" />
+                    <ValidationMessage For="@(() => UsuarioDTO.Usuario.SegundoApellido)" />
+                </div>
+            </div>
+            <div class="col-12 col-lg-4 mt-2">
+                <label>Celular:</label>
+                <div>
+                    <InputCelular @bind-Value="UsuarioDTO.Usuario.Celular"
+                                  class="form-control" />
+                    <ValidationMessage For="@(() => UsuarioDTO.Usuario.Celular)" />
+                </div>
+            </div>
+            <div class="col-12 col-lg-4 mt-2">
+                <label>Cambiar contraseña en proximo inicio:</label>
+                <div>
+                    <input  type="checkbox" @bind="UsuarioDTO.Usuario.CarmbiarContrasena" />
+                    <ValidationMessage For="@(() => UsuarioDTO.Usuario.CarmbiarContrasena)" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mt-2">
+                <button class="btn btn-success" type="submit">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+
+</EditForm>
+
+
+<MatDialog @bind-IsOpen="@CargandoUsuario">
+    <MatDialogTitle>Cargando informacion del usuario, espere un momento</MatDialogTitle>
+    <MatDialogContent>
+        <Cargando />
+    </MatDialogContent>
+</MatDialog>

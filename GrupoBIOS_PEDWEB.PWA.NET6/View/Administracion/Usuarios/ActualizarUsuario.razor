@@ -1,0 +1,34 @@
+﻿@page "/Usuarios/actualizar/{UsuarioId:int}"
+@inject IActualizarUsuarioViewModel actualizarUsuarioViewModel
+@inject RefrescarAppState refrescarAppState
+@attribute [Authorize(Roles = "1")]
+
+@if (MostrarFormulario)
+{
+    <div class="form-inline alert  alert-dark" role="alert">
+        <div class="form-group mx-sm-2 mb-2">
+            <MatButton Class="button-principal" Raised="true" Link="/Usuarios">Atras</MatButton>
+        </div>
+    </div>
+    <FormularioUsuario UsuarioDTO="actualizarUsuarioViewModel.ActualizarUsuarioDTO.UsuarioDTO" 
+                       FormularioUsuarioDTO="actualizarUsuarioViewModel.ActualizarUsuarioDTO.FormularioUsuarioDTO" 
+                       OnValidSubmit="actualizarUsuarioViewModel.ActualizarUsuarioAsync"/>
+}
+else
+{
+    <Cargando></Cargando>
+}
+@code{
+    [CascadingParameter] public AppState AppState { get; set; }
+    [Parameter] public int UsuarioId { get; set; }
+    protected bool MostrarFormulario = false;
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        AppState.TituloPagina = "Actualizar Usuario";
+        await refrescarAppState.LlamarActualizarContenedoresSuperiores();
+        await actualizarUsuarioViewModel.ObtenerActualizarUsuarioDTOAsync(UsuarioId);
+        MostrarFormulario = true;
+    }
+}

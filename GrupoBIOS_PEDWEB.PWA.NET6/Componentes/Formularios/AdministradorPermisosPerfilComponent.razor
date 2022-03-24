@@ -1,0 +1,106 @@
+﻿@inherits AdministradorPermisosPerfilComponentBase
+
+<div class="form-inline alert  alert-dark" role="alert">
+    <div class="form-group mx-sm-2 mb-2">
+        <MatTooltip Tooltip="Regresar">
+            <MatButton Class="button-principal" Raised="true" Link="AdministracionPerfiles" Icon="@MatIconNames.Arrow_back"/>
+        </MatTooltip>
+        <MatTooltip Tooltip="Regresar">
+            <MatButton Class="Agregar permisos" Raised="true" @onclick="AgregarPermisos" Icon="@MatIconNames.Add" />
+        </MatTooltip>
+        <MatTooltip Tooltip="Guardar Rol">
+            <MatButton Class="button-principal" Raised="true" @onclick="GuardarRolEvent" Icon="@MatIconNames.Save"  />
+        </MatTooltip>
+    </div>
+</div>
+<br />
+<h5>Perfiles</h5>
+<hr />
+<br />
+<EditForm Model="RolConsultado">
+    <div class="row">
+        <div class="col">
+            <MatTextField @bind-Value="RolConsultado.Nombre" HelperTextPersistent="true" Label="Nombre" Style="width:100%"></MatTextField>
+            <ValidationMessage For="@(() => RolConsultado.Nombre)" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col">
+            <MatTextField @bind-Value="RolConsultado.Descripcion" HelperTextPersistent="true" Label="Descripcion" Style="width:100%"></MatTextField>
+            <ValidationMessage For="@(() => RolConsultado.Descripcion)" />
+        </div>
+    </div>
+    <br />
+    @if (Id != 0)
+    {
+        <div class="row">
+            <div class="col">
+                <MatCheckbox @bind-Value="@RolConsultado.Estado" Label="Activo"></MatCheckbox>
+            </div>
+        </div>
+    }
+    <br />
+    <hr /><h5>Permisos</h5><br />
+    <div class="row">
+        <div class="col">
+            <input @bind-value="FiltroComponente" @bind-value:event="oninput"
+                   @onkeyup="@((KeyboardEventArgs e) => ComponenteKeyPress(e))"
+                   type="text" class="form-control" id="Nombre" placeholder="Componente" />
+        </div>
+        <div class="col">
+            <input @bind-value="FiltroAccion" @bind-value:event="oninput"
+                   @onkeyup="@((KeyboardEventArgs e) => AccionKeyPress(e))"
+                   type="text" class="form-control" id="Descripcion" placeholder="Accion" />
+        </div>
+    </div>
+</EditForm>
+<br />
+<div class="row" style="text-align: center">
+    <div class="col-12 col-lg-8">
+        <MatTable Items="@ListaOrdenadaPermisosUsuario" Style="width:max-content" AllowSelection="@true" UseSortHeaderRow="true" SelectionChanged="SelectionChangedEvent"
+                  PageLabel="Pagina" PageRecordCountLabel="Productos por pagina: ">
+            <MatTableHeader>
+                <MatSortHeaderRow SortChanged="@SortDataPermisos">
+                    <MatSortHeader SortId="Componente"><span style="width:150px">Formulario</span></MatSortHeader>
+                    <MatSortHeader SortId="Accion"><span style="width:150px">Permisos</span></MatSortHeader>
+                    <MatSortHeader SortId="Acciones"><span style="width:50px">Acciones</span></MatSortHeader>
+                </MatSortHeaderRow>
+            </MatTableHeader>
+            <MatTableRow>
+                <td>@context.Componente</td>
+                <td>@context.Accion</td>
+                <td>
+                    <MatButton Dense="true" OnClick="@(_ => EliminarPermiso(context.Id))" Icon="@MatIconNames.Delete"></MatButton>
+                </td>
+            </MatTableRow>
+        </MatTable>
+
+    </div>
+</div>
+<MatDialog @bind-IsOpen="@dialogPermisosIsOpen" Style="@("max-width: 100%;")">
+    <MatDialogTitle>
+        <h5>Permisos</h5>
+    </MatDialogTitle>
+    <MatDialogContent>
+        <EditForm Model="_RolConsultado">
+            <div class="col">
+                <MatAutocompleteList Items="@Componentes.Select(x => x.Nombre)" TItem="string" Style="width:100%" FullWidth="true" Label="Seleccione un componente" OnTextChanged="@((string value) => ComponenteHasChanged(value))"></MatAutocompleteList>
+            </div>
+            <br />
+            <br />
+            <div class="col">
+                <SelectorMultipleBotones Seleccionados="Seleccionados"
+                                         NoSeleccionados="NoSeleccionados"></SelectorMultipleBotones>
+            </div>
+
+        </EditForm>
+        <br />
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="CerrarVentanaPermisos">OK</MatButton>
+    </MatDialogActions>
+</MatDialog>
+<br />
+<br />
+<br />

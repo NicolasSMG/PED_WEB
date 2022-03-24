@@ -1,0 +1,103 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AccesoDatos", "AccesoDatos", "{00F603E9-BC95-43AE-8DF7-9709A664030C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Negocio", "Negocio", "{0E979359-0628-4C9C-A1E3-E73473C41258}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Servicios", "Servicios", "{CC000CAD-01A0-409D-B011-F32F7EBF67C0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Transversal", "Transversal", "{CB9FA904-9421-43DA-8965-A212886EB3E2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentacion", "Presentacion", "{7F0DD19F-435B-4DEA-803A-17E3AD25ED50}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrupoBIOS_PEDWEB.DM", "GrupoBIOS_PEDWEB.DM\GrupoBIOS_PEDWEB.DM.csproj", "{D68C9E72-B706-4D0A-AD80-6ED57D658D0C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrupoBIOS_PEDWEB.BM", "GrupoBIOS_PEDWEB.BM\GrupoBIOS_PEDWEB.BM.csproj", "{E31CE7BE-5A5C-4F8F-950D-335BAB7D187E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrupoBIOS_PEDWEB.DT", "GrupoBIOS_PEDWEB.DT\GrupoBIOS_PEDWEB.DT.csproj", "{3DDCC858-CCB8-4BE2-AD5D-1C8E22563022}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrupoBIOS_PEDWEB.API", "GrupoBIOS_PEDWEB.API\GrupoBIOS_PEDWEB.API.csproj", "{3CD8B481-4044-4D4F-851D-5ED22134860C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrupoBIOS_PEDWEB.Soportes", "GrupoBIOS_PEDWEB.Soportes\GrupoBIOS_PEDWEB.Soportes.csproj", "{BDA1151F-198A-4071-8AFC-CC8D7D24B3B4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrupoBIOS_PEDWEB.PWA.NET6", "GrupoBIOS_PEDWEB.PWA.NET6\GrupoBIOS_PEDWEB.PWA.NET6.csproj", "{F0401DDC-2D66-4CEC-A9AF-28ED58C72AFA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D68C9E72-B706-4D0A-AD80-6ED57D658D0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D68C9E72-B706-4D0A-AD80-6ED57D658D0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D68C9E72-B706-4D0A-AD80-6ED57D658D0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D68C9E72-B706-4D0A-AD80-6ED57D658D0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E31CE7BE-5A5C-4F8F-950D-335BAB7D187E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E31CE7BE-5A5C-4F8F-950D-335BAB7D187E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E31CE7BE-5A5C-4F8F-950D-335BAB7D187E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E31CE7BE-5A5C-4F8F-950D-335BAB7D187E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DDCC858-CCB8-4BE2-AD5D-1C8E22563022}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DDCC858-CCB8-4BE2-AD5D-1C8E22563022}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DDCC858-CCB8-4BE2-AD5D-1C8E22563022}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DDCC858-CCB8-4BE2-AD5D-1C8E22563022}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CD8B481-4044-4D4F-851D-5ED22134860C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CD8B481-4044-4D4F-851D-5ED22134860C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CD8B481-4044-4D4F-851D-5ED22134860C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CD8B481-4044-4D4F-851D-5ED22134860C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDA1151F-198A-4071-8AFC-CC8D7D24B3B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDA1151F-198A-4071-8AFC-CC8D7D24B3B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDA1151F-198A-4071-8AFC-CC8D7D24B3B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDA1151F-198A-4071-8AFC-CC8D7D24B3B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0401DDC-2D66-4CEC-A9AF-28ED58C72AFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0401DDC-2D66-4CEC-A9AF-28ED58C72AFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0401DDC-2D66-4CEC-A9AF-28ED58C72AFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0401DDC-2D66-4CEC-A9AF-28ED58C72AFA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D68C9E72-B706-4D0A-AD80-6ED57D658D0C} = {00F603E9-BC95-43AE-8DF7-9709A664030C}
+		{E31CE7BE-5A5C-4F8F-950D-335BAB7D187E} = {0E979359-0628-4C9C-A1E3-E73473C41258}
+		{3DDCC858-CCB8-4BE2-AD5D-1C8E22563022} = {CB9FA904-9421-43DA-8965-A212886EB3E2}
+		{3CD8B481-4044-4D4F-851D-5ED22134860C} = {CC000CAD-01A0-409D-B011-F32F7EBF67C0}
+		{BDA1151F-198A-4071-8AFC-CC8D7D24B3B4} = {CB9FA904-9421-43DA-8965-A212886EB3E2}
+		{F0401DDC-2D66-4CEC-A9AF-28ED58C72AFA} = {7F0DD19F-435B-4DEA-803A-17E3AD25ED50}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A58A492E-DC3A-4ECA-9A13-88AD848F3430}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 7
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://algartechcolombia.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = GrupoBIOS_PEDWEB.DM\\GrupoBIOS_PEDWEB.DM.csproj
+		SccProjectTopLevelParentUniqueName1 = GrupoBIOS_PEDWEB.sln
+		SccProjectName1 = GrupoBIOS_PEDWEB.DM
+		SccLocalPath1 = GrupoBIOS_PEDWEB.DM
+		SccProjectUniqueName2 = GrupoBIOS_PEDWEB.BM\\GrupoBIOS_PEDWEB.BM.csproj
+		SccProjectTopLevelParentUniqueName2 = GrupoBIOS_PEDWEB.sln
+		SccProjectName2 = GrupoBIOS_PEDWEB.BM
+		SccLocalPath2 = GrupoBIOS_PEDWEB.BM
+		SccProjectUniqueName3 = GrupoBIOS_PEDWEB.DT\\GrupoBIOS_PEDWEB.DT.csproj
+		SccProjectTopLevelParentUniqueName3 = GrupoBIOS_PEDWEB.sln
+		SccProjectName3 = GrupoBIOS_PEDWEB.DT
+		SccLocalPath3 = GrupoBIOS_PEDWEB.DT
+		SccProjectUniqueName4 = GrupoBIOS_PEDWEB.API\\GrupoBIOS_PEDWEB.API.csproj
+		SccProjectTopLevelParentUniqueName4 = GrupoBIOS_PEDWEB.sln
+		SccProjectName4 = GrupoBIOS_PEDWEB.API
+		SccLocalPath4 = GrupoBIOS_PEDWEB.API
+		SccProjectUniqueName5 = GrupoBIOS_PEDWEB.Soportes\\GrupoBIOS_PEDWEB.Soportes.csproj
+		SccProjectTopLevelParentUniqueName5 = GrupoBIOS_PEDWEB.sln
+		SccProjectName5 = GrupoBIOS_PEDWEB.Soportes
+		SccLocalPath5 = GrupoBIOS_PEDWEB.Soportes
+		SccProjectUniqueName6 = GrupoBIOS_PEDWEB.PWA.NET6\\GrupoBIOS_PEDWEB.PWA.NET6.csproj
+		SccProjectTopLevelParentUniqueName6 = GrupoBIOS_PEDWEB.sln
+		SccProjectName6 = GrupoBIOS_PEDWEB.PWA.NET6
+		SccLocalPath6 = GrupoBIOS_PEDWEB.PWA.NET6
+	EndGlobalSection
+EndGlobal

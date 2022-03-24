@@ -1,0 +1,59 @@
+﻿@page "/CambioContrasena/{NombreUsuario}"
+@inject IJSRuntime js;
+@inject ICambiarContrasena_ViewModel CambiarContrasenaViewModel
+@inject RefrescarAppState refrescarAppState
+
+@if (NombreUsuario != null)
+{
+
+    <EditForm Model="CambiarContrasenaViewModel.CambioContrasena" OnValidSubmit="CambiarContrasena">
+        <DataAnnotationsValidator />
+        <div class="wrapper fadeInDown">
+            <div id="formContent">
+                <div class="fadeIn first">
+                    
+                </div>
+                <div class="fadeIn first">
+                    <h4>¡Hola @NombreUsuario!, Por favor cambia la contraseña para poder continuar.</h4>
+                </div>
+
+                <InputPassword class="fadeIn third" id="login" @bind-Value="CambiarContrasenaViewModel.CambioContrasena.Clave" name="Clave" placeholder="Contraseña" />
+                <ValidationMessage For="@(() => CambiarContrasenaViewModel.CambioContrasena.Clave)" />
+                <InputPassword class="fadeIn third" id="password" @bind-Value="CambiarContrasenaViewModel.CambioContrasena.RepetirClave" name="password" placeholder="Repetir Contraseña" />
+                <ValidationMessage For="@(() => CambiarContrasenaViewModel.CambioContrasena.RepetirClave)" />
+                <input type="submit" class="fadeIn fourth" value="Actualizar contraseña">
+                <div id="formFooter">
+                </div>
+            </div>
+        </div>
+    </EditForm>
+}
+else
+{
+    <Cargando />
+}
+
+
+@code {
+    [Parameter] public string NombreUsuario { get; set; }
+    [CascadingParameter] public AppState AppState { get; set; }
+    protected string Logo;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await refrescarAppState.LlamarActualizarNavBarRoles();
+        await refrescarAppState.LlamarActualizarContenedoresSuperiores();
+        CambiarContrasenaViewModel.InicializaViewModel();
+        Logo = await js.GetFromLocalStorage("LogoCompañia");
+        StateHasChanged();
+    }
+
+    private async Task CambiarContrasena()
+    {
+        CambiarContrasenaViewModel.NombreUsuarioVM = NombreUsuario;
+        await CambiarContrasenaViewModel.CambiarContrasenaAsync();
+        await refrescarAppState.LlamarActualizarNavBarRoles();
+        await refrescarAppState.LlamarActualizarContenedoresSuperiores();
+    }
+}

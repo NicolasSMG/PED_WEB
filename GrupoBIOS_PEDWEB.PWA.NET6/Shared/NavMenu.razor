@@ -1,0 +1,152 @@
+﻿@inject RefrescarAppState RefrescarAppState
+@inject IJSRuntime Js
+
+@if (usuario != null)
+    if (usuario.Identity.IsAuthenticated)
+    {
+        <div class="sidebar">
+            <div class="top-row ps-3 navbar navbar-dark">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="">
+                        @if (!string.IsNullOrEmpty(Logo))
+                        {
+                            <img alt="Logo Compañia" style="display: inline; margin: auto; max-height: 35px; margin-left: 10px; " src="@Logo" />
+                        }
+                    </a>
+                    <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+                <nav class="flex-column">
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="PaginaPrincipal" Match="NavLinkMatch.All">
+                            <span class="oi oi-home" aria-hidden="true"></span> Home
+                        </NavLink>
+                    </div>
+                    <AuthorizeView Roles="9">
+                        <Authorized>
+                            <div class="nav-item px-3">
+                                <NavLink class="nav-link" href="variablesConexionSiesa">
+                                    <span class="oi oi-plus" aria-hidden="true"></span> Configuracion sistema
+                                </NavLink>
+                            </div>
+                        </Authorized>
+                    </AuthorizeView>
+                    <AuthorizeView Roles="9">
+                        <Authorized>
+                            <div class="nav-item px-3">
+                                <NavLink class="nav-link" href="email">
+                                    <span class="oi oi-envelope-open" aria-hidden="true"></span> Mensajes
+                                </NavLink>
+                            </div>
+                        </Authorized>
+                    </AuthorizeView>
+                    <AuthorizeView Roles="4">
+                        <Authorized>
+                            <div class="nav-item px-3">
+                                <NavLink class="nav-link" href="Pedido">
+                                    <span class="oi oi-plus" aria-hidden="true"></span> Pedido
+                                </NavLink>
+                            </div>
+                        </Authorized>
+                    </AuthorizeView>
+                    <AuthorizeView Roles="15, 19">
+                        <Authorized>
+                            <div class="nav-item px-3">
+                                <NavLink class="nav-link" href="ConfirmarSolicitudes">
+                                    <span class="oi oi-plus" aria-hidden="true"></span> Confirmar solicitudes
+                                </NavLink>
+                            </div>
+                        </Authorized>
+                    </AuthorizeView>
+                    <AuthorizeView Roles="11">
+                        <Authorized>
+                            <div class="nav-item px-3">
+                                <NavLink class="nav-link" href="AdministracionPerfiles">
+                                    <span class="oi oi-plus" aria-hidden="true"></span> Administracion Perfiles
+                                </NavLink>
+                            </div>
+                        </Authorized>
+                    </AuthorizeView>
+                    <AuthorizeView Roles="16">
+                        <Authorized>
+                            <div class="nav-item px-3">
+                                <NavLink class="nav-link" href="AdministrarCliente">
+                                    <span class="oi oi-plus" aria-hidden="true"></span> Administrar Cliente
+                                </NavLink>
+                            </div>
+                        </Authorized>
+                    </AuthorizeView>
+                    <AuthorizeView Roles="5, 17, 18">
+                        <Authorized>
+                            <div class="nav-item px-3">
+                                <NavLink class="nav-link" href="Usuarios">
+                                    <span class="oi oi-plus" aria-hidden="true"></span> Administrar Usuarios
+                                </NavLink>
+                            </div>
+                        </Authorized>
+                    </AuthorizeView>
+                    @if (TipoIngreso != "3")
+                    {
+                        <AuthorizeView Roles="4">
+                            <Authorized>
+                                <div class="nav-item px-3">
+                                    <NavLink class="nav-link" href="DiagramaGrafico">
+                                        <span class="oi oi-plus" aria-hidden="true"></span> Diagramas y Graficos
+                                    </NavLink>
+                                </div>
+                            </Authorized>
+                        </AuthorizeView>
+                    }
+                    <AuthorizeView Roles="4">
+                        <Authorized>
+                            <div class="nav-item px-3">
+                                <NavLink class="nav-link" href="InformeGeneral">
+                                    <span class="oi oi-plus" aria-hidden="true"></span> Informe General
+                                </NavLink>
+                            </div>
+                        </Authorized>
+                    </AuthorizeView>
+                </nav>
+            </div>
+        </div>
+    }
+
+@code {
+    [CascadingParameter] private Task<AuthenticationState> AuthenticationState { get; set; }
+    protected System.Security.Claims.ClaimsPrincipal usuario;
+    protected string Logo;
+    private bool collapseNavMenu = true;
+    public string TipoIngreso { get; set; }
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        TipoIngreso = await Js.GetFromLocalStorage("TIPOINGRESOID");
+        RefrescarAppState.ActualizarContenedoresSuperiores += MostrarNav;
+    }
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+    protected async Task MostrarNav()
+    {
+        var authState = await AuthenticationState;
+        usuario = authState.User;
+        if (usuario != null)
+        {
+            if (usuario.Identity.IsAuthenticated)
+            {
+                Logo = await Js.GetFromLocalStorage("LogoCompañia");
+            }
+        }
+
+        StateHasChanged();
+    }
+}

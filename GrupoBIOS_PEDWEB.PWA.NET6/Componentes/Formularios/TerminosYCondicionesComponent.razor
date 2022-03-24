@@ -1,0 +1,81 @@
+﻿@using WYSIWYGTextEditor
+
+<TextEditor @ref="@QuillHtml">
+    <ToolbarContent>
+        <select class="ql-header">
+            <option selected=""></option>
+            <option value="1"></option>
+            <option value="2"></option>
+            <option value="3"></option>
+            <option value="4"></option>
+            <option value="5"></option>
+        </select>
+        <span class="ql-formats">
+            <button class="ql-bold"></button>
+            <button class="ql-italic"></button>
+            <button class="ql-underline"></button>
+            <button class="ql-strike"></button>
+        </span>
+        <span class="ql-formats">
+            <select class="ql-color"></select>
+            <select class="ql-background"></select>
+        </span>
+        <span class="ql-formats">
+            <button class="ql-list" value="ordered"></button>
+            <button class="ql-list" value="bullet"></button>
+        </span>
+        <span class="ql-formats">
+            <button class="ql-link"></button>
+        </span>
+    </ToolbarContent>
+    <EditorContent>
+        @if (TerminosYCondiciones != null)
+        {
+            @((MarkupString)TerminosYCondiciones)
+        }
+    </EditorContent>
+</TextEditor>
+<br />
+<button class="btn btn-primary"
+        @onclick="GetHTML">
+    Salvar
+</button>
+@if (obtener)
+{
+    <button class="btn btn-primary"
+        @onclick="SetHTML">
+        Obtener terminos y condiciones
+    </button>
+}
+<br />
+<br />
+@code {
+    [Parameter] public string TerminosYCondiciones { get; set; }
+    [Parameter] public EventCallback<string> Salvar { get; set; }
+    List<string> Fonts = new List<string> { "MSGothic", "Impact", "Courier", "Comic", "Bahnschrift" };
+    TextEditor QuillHtml;
+    string QuillHTMLContent;
+    public bool obtener { get; set; } = true;
+
+    protected async override Task OnInitializedAsync()
+    {
+        await this.QuillHtml.LoadHTMLContent(TerminosYCondiciones);
+        StateHasChanged();
+    }
+    public async void GetHTML()
+    {
+        QuillHTMLContent = await this.QuillHtml.GetHTML();
+        if (QuillHTMLContent != null)
+        {
+            await Salvar.InvokeAsync(QuillHTMLContent);
+        }
+        StateHasChanged();
+    }
+
+    public async Task SetHTML()
+    {
+        await this.QuillHtml.LoadHTMLContent(TerminosYCondiciones);
+        obtener = false;
+        StateHasChanged();
+    }
+}

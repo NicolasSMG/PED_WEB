@@ -1,0 +1,42 @@
+﻿@page "/AdministracionPermisosPerfiles/{Id:int}"
+@page "/AdministracionPermisosPerfiles/{Id:int}/{NombreRol}"
+@inject IGestionRoles_ViewModel GestionRoles
+@inject RefrescarAppState refrescarAppState
+@attribute [Authorize(Roles = "11,13,14")]
+
+
+
+                                      
+<AdministradorPermisosPerfilComponent Id="Id"
+                                      RolConsultado="GestionRoles.RolConsultado"
+                                      RolDTO="GestionRoles.RolDTO"
+                                      Componentes="GestionRoles.Componentes"
+                                      PermisosUsuarios="PermisosUsuario"
+                                      ConsultarComponentes="GestionRoles.ObtenerComponentes"
+                                      ConsultarPermisosRol="(string valor) => GestionRoles.ObtenerPermisosRol(valor)"
+                                      CrearRol="(RolDTO valor) => GestionRoles.CrearRol(valor)"
+                                      Roles="GestionRoles.Roles"
+                                      ConsultarAccionesComponentes="(string valor) => GestionRoles.ObtenerAccionesComponentes(valor)"
+                                      Acciones="GestionRoles.Acciones" 
+                                      NombreRol="NombreRol"
+                                      EliminarPermisoRol="(RolOperacionDTO valor) => GestionRoles.EliminarPermisoRol(valor)"/>
+
+
+
+
+@code {
+    [Parameter] public int Id { get; set; }
+    [Parameter] public string NombreRol { get; set; }
+    [CascadingParameter] public AppState AppState { get; set; }
+    public List<PermisosUsuario> PermisosUsuario { get; set; } = new List<PermisosUsuario>();
+
+    protected async override Task OnInitializedAsync()
+    {
+        await GestionRoles.ObtenerRol(NombreRol);
+        PermisosUsuario = await GestionRoles.ObtenerPermisosRol(NombreRol);
+        AppState.TituloPagina = "Administracion de permisos perfiles";
+        await refrescarAppState.LlamarActualizarContenedoresSuperiores();
+        await GestionRoles.InicializarViewModel();
+        StateHasChanged();
+    }
+}

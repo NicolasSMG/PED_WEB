@@ -1,0 +1,30 @@
+﻿@page "/Pedido"
+@inject IListadoPedidos_ViewModel ListadoPedidosViewModel
+@inject RefrescarAppState refrescarAppState
+@attribute [Authorize(Roles = "1,2,3,4")]
+@if (ListadoPedidosViewModel.Formulario)
+{
+    @if (ListadoPedidosViewModel.Pedidos != null)
+    {
+        <FiltrarPedidos Pedidos="ListadoPedidosViewModel.Pedidos"
+                FiltrosPedido="ListadoPedidosViewModel.FiltrosPedido"
+                RegistrosTotales="ListadoPedidosViewModel.RegistrosTotales"
+                PaginaSeleccionada="ListadoPedidosViewModel.paginaSeleccionada"
+                PaginasTotales="ListadoPedidosViewModel.paginasTotales">
+        </FiltrarPedidos>
+    }
+}
+else
+{
+    <Cargando></Cargando>
+}
+
+@code {
+    [CascadingParameter] public AppState AppState { get; set; }
+    protected async override Task OnInitializedAsync()
+    {
+        AppState.TituloPagina = "Pedidos";
+        await refrescarAppState.LlamarActualizarContenedoresSuperiores();
+        await ListadoPedidosViewModel.CargarPedidos();
+    }
+}

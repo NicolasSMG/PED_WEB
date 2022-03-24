@@ -1,0 +1,90 @@
+﻿@using ChartJs.Blazor.BarChart
+@using ChartJs.Blazor.BarChart.Axes
+@using System.Collections.Generic
+@using GrupoBIOS_PEDWEB.PWA.NET6.Helpers
+
+@if (MostrarCargando)
+{
+    <Cargando />
+}
+else
+{
+    @if (_config != null)
+    {
+        <Chart Config="_config" Width="500" Height="500"></Chart>
+    }
+}
+
+@code {
+
+    [Parameter] public string Titulo { get; set; }
+    [Parameter] public IList<IDataset> ListadoDatasets { get; set; }
+    [Parameter] public EventCallback<string> GetCanvasId { get; set; }
+    [Parameter] public long DurationAnimation { get; set; } = 2000;
+    private BarConfig _config;
+    public bool MostrarCargando { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        MostrarCargando = !MostrarCargando;
+        await Task.Run(() =>
+        {
+            _config = new BarConfig
+                {
+                    Options = new BarOptions
+                    {
+                        Animation = new Animation
+                        {
+                            Duration = DurationAnimation
+                        },
+                        Hover = new Hover()
+                        {
+                            AnimationDuration = DurationAnimation
+                        },
+                        Responsive = true,
+                        ResponsiveAnimationDuration = (int)DurationAnimation,
+                        MaintainAspectRatio = false,
+                        Title = new OptionsTitle
+                        {
+                            Display = true,
+                            Text = Titulo
+                        },
+                        Tooltips = new Tooltips
+                        {
+                            Mode = InteractionMode.Index,
+                            Intersect = false
+                        },
+                        Scales = new BarScales
+                        {
+                            XAxes = new List<CartesianAxis>
+                    {
+                            new BarCategoryAxis
+                            {
+                                Stacked = true
+                            }
+                                    },
+                            YAxes = new List<CartesianAxis>
+                    {
+                            new BarLinearCartesianAxis
+                            {
+                                GridLines = new GridLines()
+                                {
+                                    Display = true
+                                },
+                                Stacked = true
+                            }
+                                    }
+                        }
+                    }
+                };
+            _config.Data.Labels.AddRange(new[] { "Real" });
+            foreach (var dataset in ListadoDatasets)
+            {
+                _config.Data.Datasets.Add(dataset);
+            }
+        });
+        MostrarCargando = !MostrarCargando;
+        StateHasChanged();
+        await GetCanvasId.InvokeAsync(_config.CanvasId);
+    }
+}

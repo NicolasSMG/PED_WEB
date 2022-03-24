@@ -1,0 +1,136 @@
+﻿@inject IMatDialogService MatDialogService
+@inject Model.Pedidos.Interfaces.ILiquidacionPedido_Model LiquidacionPedido_Model
+@inject GrupoBIOS_PEDWEB.PWA.Helpers.Interfaces.IMostrarMensajes MostrarMensajes
+
+@inject NavigationManager NavigationManager
+
+<MatDialogTitle style="display: flex; align-items: center;">
+    <div style="flex: 1;">Liquidación de pedido</div>
+    <div @onclick="@(_=>CloseDialog())" style="cursor: pointer;">
+        <MatIcon Icon="@MatIconNames.Close"></MatIcon>
+    </div>
+</MatDialogTitle>
+<MatDialogContent  Style="@("max-width: 100%;")">
+    @if (LiquidacionPedidoDTO != null && LiquidacionPedidoDTO.LiquidacionPedidos != null && LiquidacionPedidoDTO.LiquidacionPedidos.Any())
+    {
+        <p>CORRESPONDE A LA TOTALIDAD DEL PEDIDO ANTES DE SER DESPACHADO</p>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 ">
+                    <MatTable Items="@LiquidacionPedidoDTO.LiquidacionPedidos" AllowSelection="@true" UseSortHeaderRow="true"
+                          PageLabel="Pagina" PageRecordCountLabel="Productos por pagina: ">
+                        <MatTableHeader>
+                            <MatSortHeaderRow>
+                                <MatSortHeader SortId="Referencia"><span style="width:50px;text-align:center; font-size: 0.9rem;">Referencia</span></MatSortHeader>
+                                <MatSortHeader SortId="Descripcion"><span style="width: 200px; text-align: center; font-size: 0.9rem;">Descripción</span></MatSortHeader>
+                                <MatSortHeader SortId="Cantidad"><span style="width: 50px; text-align: center; font-size: 0.9rem;">Cantidad</span></MatSortHeader>
+                                <MatSortHeader SortId="PrecioUnidad"><span style="width: 50px; text-align: center; font-size: 0.9rem; ">Precio Unidad</span></MatSortHeader>
+                                <MatSortHeader SortId="ValorNeto"><span style="width: 50px; text-align: center; font-size: 0.9rem; ">Valor Neto</span></MatSortHeader>
+                                <MatSortHeader SortId="Descuentos"><span style="width: 50px; text-align: center; font-size: 0.9rem; ">Descuentos</span></MatSortHeader>
+                                <MatSortHeader SortId="IVA"><span style="width: 50px; text-align: center; font-size: 0.9rem; ">IVA</span></MatSortHeader>
+                                <MatSortHeader SortId="Retencion"><span style="width: 50px; text-align: center; font-size: 0.9rem; ">Retencion</span></MatSortHeader>
+                                <MatSortHeader SortId="Total"><span style="width: 50px; text-align: center; font-size: 0.9rem; ">Total</span></MatSortHeader>
+                            </MatSortHeaderRow>
+                        </MatTableHeader>
+                        <MatTableRow>
+                            <td>@context.Referencia</td>
+                            <td>@context.Descripcion</td>
+                            <td><LabelNumero Value="@context.Cantidad" /></td>
+                            <td><LabelNumero Value="@context.PrecioUnidad" /></td>
+                            <td><LabelNumero Value="@context.ValorNeto" /></td>
+                            <td><LabelNumero Value="@context.Descuentos" /></td>
+                            <td><LabelNumero Value="@context.IVA" /></td>
+                            <td><LabelNumero Value="@context.Retencion" /></td>
+                            <td><LabelNumero Value="@context.Total" /></td>
+                        </MatTableRow>
+                    </MatTable>
+                    <div class="table-responsive-md">
+                        <table class="table table-bordered table-md">
+                            <thead>
+
+                                <tr>
+                                    <td colspan="2" style="align-content:center">Consolidado</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Valor neto total</td>
+                                    <td style="text-align: end;"><LabelNumero Value="@LiquidacionPedidoDTO.LiquidacionPedidos.Sum((x)=>x.ValorNeto)" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Descuentos</td>
+                                    <td style="text-align: end;"><LabelNumero Value="@LiquidacionPedidoDTO.LiquidacionPedidos.Sum((x)=>x.Descuentos)" /></td>
+                                </tr>
+                                <tr>
+                                    <td>IVA</td>
+                                    <td style="text-align: end;"><LabelNumero Value="@LiquidacionPedidoDTO.LiquidacionPedidos.Sum((x)=>x.IVA)" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Retención</td>
+                                    <td style="text-align: end;"><LabelNumero Value="@LiquidacionPedidoDTO.LiquidacionPedidos.Sum((x)=>x.Retencion)" /></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Total a pagar</b></td>
+                                    <td style="text-align: end;"><b><LabelNumero Value="@LiquidacionPedidoDTO.LiquidacionPedidos.Sum((x)=>x.Total)" /></b></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <Cargando />
+    }
+</MatDialogContent>
+<MatDialogActions>
+    @if (LiquidacionPedidoDTO != null && !Preliquidacion)
+    {
+        <MatButton Dense="true" Icon="@MatIconNames.Check" @onclick="LiquidarPedido">Aceptar</MatButton>
+    }
+    <MatButton Dense="true" Icon="@MatIconNames.Cancel" @onclick="CloseDialog">Regresar</MatButton>
+</MatDialogActions>
+<MatDialog @bind-IsOpen="@Liquidando">
+    <MatDialogTitle>@($"Liquidando pedido N° {PedidoId}")</MatDialogTitle>
+    <MatDialogContent>
+        <Cargando />
+    </MatDialogContent>
+</MatDialog>
+
+@code
+{
+    [Parameter] public int PedidoId { get; set; }
+    [Parameter] public bool Preliquidacion { get; set; }
+    public bool Liquidando { get; set; }
+    public LiquidacionPedidoDTO? LiquidacionPedidoDTO { get; set; }
+    [CascadingParameter] public MatDialogReference? DialogReference { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        LiquidacionPedidoDTO = await LiquidacionPedido_Model.GenerarPreLiquidacion(PedidoId);
+    }
+    void CloseDialog()
+    {
+        DialogReference.Close(null);
+        StateHasChanged();
+    }
+    async Task LiquidarPedido()
+    {
+        Liquidando = true;
+        var respuestaServicio = await LiquidacionPedido_Model.LiquidarPedido(PedidoId);
+        Liquidando = false;
+        StateHasChanged();
+        if (respuestaServicio.Respuesta)
+        {
+            await MostrarMensajes.MostrarMensajeExitoso($"El pedido {PedidoId} ha sido liquidado correctamente");
+            NavigationManager.NavigateTo("Pedido");
+        }
+        else
+        {
+            await MostrarMensajes.MostrarMensajeError($"Ocurrio un error al liquidar el pedido." + respuestaServicio.Mensaje);
+        }
+        DialogReference.Close(null);
+    }
+}

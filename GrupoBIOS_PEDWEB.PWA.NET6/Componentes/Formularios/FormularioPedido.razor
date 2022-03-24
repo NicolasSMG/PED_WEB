@@ -1,0 +1,484 @@
+﻿@inherits FormularioPedidoBase
+<div class="form-inline alert  alert-dark" role="alert">
+    <div class="form-group mx-sm-2 mb-2">
+        <MatTooltip Tooltip="Atras" Wrap="true">
+            <MatButton Class="button-principal" Raised="true" Link="Pedido" Icon="@MatIconNames.Arrow_back" />
+        </MatTooltip>
+        <MatTooltip Tooltip="Liquidar pedido" Wrap="true">
+            <MatButton Class="button-principal" Raised="true" Icon="@MatIconNames.Check" OnClick="@(() => LiquidacionOnclick())" />
+        </MatTooltip>
+        @*<MatButton Class="button-principal" Raised="true" Icon="@MatIconNames.Description" OnClick="@(() => LiquidacionOnclick(true))" />*@
+        @*<MatButton Class="button-principal" Raised="true" Icon="@MatIconNames.Note_add" Link="Pedido/ImportarExcel" />*@
+        <MatTooltip Tooltip="Autogenerar pedido" Wrap="true">
+            <MatButton Class="button-principal" Raised="true" Disabled="btnAutogenerarPedido" Icon="@MatIconNames.Sync" OnClick="MostrarAutogenerarPedido" />
+        </MatTooltip>
+        <MatTooltip Tooltip="Guardar pedido" Wrap="true">
+            <MatButton Class="button-principal" Raised="true" Type="submit" OnClick="@(() => OnDataAnnotacionsValidate())" Icon="@MatIconNames.Save" />
+        </MatTooltip>
+
+    </div>
+</div>
+<EditForm EditContext="EditContext">
+    <DataAnnotationsValidator />
+    <h3>Pedido</h3>
+    <hr />
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-4 mt-2">
+                @if (FormularioPedidoDTO.ListaClientes.Count() > 1)
+                {
+                    <MatAutocompleteList Items="@FormularioPedidoDTO.ListaClientes.Select(x => x.NombreNit)" TItem="string" Style="width:100%" FullWidth="true" Value="PedidoDTO.Pedido.ClienteNombre" Label="Seleccione un cliente" ValueChanged="@((string value) => ClienteHasChanged(value))"></MatAutocompleteList>
+                }
+
+                @if (FormularioPedidoDTO.ListaClientes.Count() == 1)
+                {
+                    <MatTextField @bind-Value="@UnicoCliente" HelperTextPersistent="true" Style="width:100%" Label="Cliente" ReadOnly="true"></MatTextField>
+                }
+
+            </div>
+            <div class="col-12 col-lg-4 mt-2">
+                <MatTextField @bind-Value="PedidoDTO.Pedido.Estado" HelperTextPersistent="true" Label="Estado" ReadOnly="true" Style="width:100%"></MatTextField>
+                <ValidationMessage For="@(() => PedidoDTO.Pedido.Estado)" />
+            </div>
+            <div class="col-12 col-lg-4 mt-2">
+                <MatTextField @bind-Value="PedidoDTO.Pedido.FechaPedido" HelperTextPersistent="true" Style="width:100%" Label="Fecha Pedido" ReadOnly="true"></MatTextField>
+            </div>
+            <div class="col-12 col-lg-4 mt-2">
+                <select class="form-control"
+                        disabled="@((FormularioPedidoDTO.Sucursales != null && FormularioPedidoDTO.Sucursales.Count == 1) || !EditarSucursalyPuntoEnvio )"
+                        title="Seleccione sucursal"
+                        value="@PedidoDTO.Pedido.SucursalId_SIESA"
+                        Style="width:100%;height:90%"
+                        @onchange="@((ChangeEventArgs e) => SucursalChanged(e))">
+                    <option value="null" selected> Seleccione una sucursal</option>
+                    @if (FormularioPedidoDTO.Sucursales != null)@if (FormularioPedidoDTO.Sucursales.Count != 0)
+                        {
+                            @foreach (var sucursal in FormularioPedidoDTO.Sucursales)
+                            {
+                                <option value="@sucursal.Id">@sucursal.Id @sucursal.Descripcion</option>
+                            }
+                        }
+                </select>
+            </div>
+            <div class="col-12 col-lg-4 mt-2">
+                <select class="form-control"
+                        disabled="@((FormularioPedidoDTO.PuntosDeEnvio != null && FormularioPedidoDTO.PuntosDeEnvio.Count == 1) || !EditarSucursalyPuntoEnvio)"
+                        title="Seleccione punto de envio"
+                        value="@PedidoDTO.Pedido.PuntoEnvio_SIESA"
+                        Style="width:100%;height:90%"
+                        @onchange="@((ChangeEventArgs e) => PuntosEnvioChanged(e))">
+                    <option value="0">Seleccione punto de envio</option>
+                    @if (FormularioPedidoDTO.PuntosDeEnvio != null)@if (FormularioPedidoDTO.PuntosDeEnvio.Count != 0)
+                        {
+                            @foreach (var puntoEnvio in FormularioPedidoDTO.PuntosDeEnvio)
+                            {
+                                <option value="@puntoEnvio.Id">@puntoEnvio.Id @puntoEnvio.Descripcion</option>
+                            }
+                        }
+                </select>
+                <ValidationMessage For="@(() => FormularioPedidoDTO.PuntosDeEnvio)" />
+            </div>
+            <div class="col-12 col-lg-4 mt-2">
+                <MatTextField @bind-Value="PedidoDTO.Pedido.CentroOperativo" HelperTextPersistent="true" Label="Centro Operativo" Style="width:100%" ReadOnly="true"></MatTextField>
+                <ValidationMessage For="@(() => PedidoDTO.Pedido.CentroOperativo)" />
+            </div>
+            <div class="col-12 col-lg-4 mt-2">
+                <MatTextField @bind-Value="PedidoDTO.Pedido.TipoPago" HelperTextPersistent="true" Label="Tipo de pago" ReadOnly="true" Style="width:100%"></MatTextField>
+                <ValidationMessage For="@(() => PedidoDTO.Pedido.TipoPago)" />
+            </div>
+            <div class="col-12 col-lg-4 mt-2">
+                <MatTextField Type="@("number")" @ref="InputDocumentoConductor" @bind-Value="PedidoDTO.Pedido.DocumentoConductor" HelperTextPersistent="true" Style="width:100%" Label="Documento del conductor"></MatTextField>
+                <ValidationMessage For="@(()=>PedidoDTO.Pedido.DocumentoConductor)" />
+            </div>
+            <div class="col-12 col-lg-4 mt-2">
+                <MatTextField @ref="InputPlacaVehiculo" @bind-Value="PedidoDTO.Pedido.PlacaVehiculo" HelperTextPersistent="true" Style="width:100%" Label="Placa Vehiculo"></MatTextField>
+                <ValidationMessage For="@(()=>PedidoDTO.Pedido.PlacaVehiculo)" />
+            </div>
+            <div class="col-12 col-lg-4 mt-2">
+                <MatTextField @ref="InputNombreConductor" @bind-Value="PedidoDTO.Pedido.NombreConductor" Style="width:100%" HelperTextPersistent="true" Label="Nombre del conductor"></MatTextField>
+                <ValidationMessage For="@(()=>PedidoDTO.Pedido.NombreConductor)" />
+            </div>
+            <div class="col-12 col-lg-4 mt-2">
+                <h5 Class="mat-subtitle1">Entrega factura al conductor?</h5>
+                <MatRadioGroup GroupName="gender" @bind-Value="PedidoDTO.Pedido.EntregaFactura" TValue="bool">
+                    <MatRadioButton Value="@true" Label="Si" TValue="bool"></MatRadioButton>
+                    <MatRadioButton Value="@false" TValue="bool">No</MatRadioButton>
+                </MatRadioGroup>
+                <ValidationMessage For="@(()=>PedidoDTO.Pedido.EntregaFactura)" />
+            </div>
+            <div class="col-12 col-lg-4 mt-2">
+                <MatDatePicker @ref="InputFechaDespacho" Label="FechaDespacho" Outlined="true" TValue="DateTime" Minimum="DateTime.Now.Date" Style="width:100%" @bind-Value="PedidoDTO.Pedido.FechaDespacho"></MatDatePicker>
+                <ValidationMessage For="@(()=>PedidoDTO.Pedido.FechaDespacho)" />
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-12 mt-2">
+                    <MatTextField @bind-Value="PedidoDTO.Pedido.Observaciones" HelperTextPersistent="true" Style="width:100%" Label="Observaciones" TextArea="true" FullWidth="true"></MatTextField>
+                    <ValidationMessage For="@(()=>PedidoDTO.Pedido.Observaciones)" />
+                </div>
+            </div>
+
+
+
+            @if (FormularioPedidoDTO.ListaPortafolios != null)
+            {
+                @if (FormularioPedidoDTO.ListaPortafolios.Any())
+                {
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="content">
+                                    <MatH6>
+                                        Total Kilogramos :@((from PP in FormularioPedidoDTO.ListaPortafolios
+                                select PP.Peso * (PP.CantidadProductoSeleccionado + PP.CantidadMedicamentoSeleccionado)).Sum())
+                                    </MatH6>
+                                    <MatH6>
+                                        Total Bultos : @((from PP in FormularioPedidoDTO.ListaPortafolios
+                                where PP.UnidadEmpaque == "BULT"
+                                select (PP.CantidadProductoSeleccionado+PP.CantidadMedicamentoSeleccionado)).Sum())
+                                    </MatH6>
+                                </div>
+                                <br />
+                            </div>
+                            <div class="col-10" style="text-align: center">
+                                <br />
+                                <p>
+                                    <MatButton Outlined="true" Type="button" Icon="@MatIconNames.Search" OnClick="@(()=>OpenDialog(null, null))">
+                                        Busqueda de producto
+                                    </MatButton>
+                                </p>
+
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="container">
+                            <MatAccordion>
+                                @foreach (var linea in FormularioPedidoDTO.ListaPortafolios.OrderBy(x => x.Linea).Select(s => s.Linea).Distinct())
+                                {
+                                    <MatExpansionPanel>
+                                        <MatExpansionPanelSummary>
+                                            <MatExpansionPanelHeader>
+                                                <div>
+                                                    <p style="margin-top:revert;width:max-content">
+                                                        <b style="font-size:medium">@linea</b>
+                                                        (         Items Seleccionados:
+                                                        @((from PP in FormularioPedidoDTO.ListaPortafolios
+                                            where PP.Linea == linea
+                                            && (PP.CantidadProductoSeleccionado != 0 || PP.CantidadMedicamentoSeleccionado != 0)
+                                            select PP.Referencia).Count())
+                                                        - Total Kilogramos:
+                                                        @((from PP in FormularioPedidoDTO.ListaPortafolios
+                                            where PP.Linea == linea
+                                            select PP.Peso * (PP.CantidadProductoSeleccionado + PP.CantidadMedicamentoSeleccionado)).Sum())
+                                                        - Total Bultos:
+                                                        @((from PP in FormularioPedidoDTO.ListaPortafolios
+                                            where PP.Linea == linea && PP.UnidadEmpaque == "BULT"
+                                            select (PP.CantidadProductoSeleccionado + PP.CantidadMedicamentoSeleccionado)).Sum())
+                                                        )
+                                                    </p>
+                                                </div>
+                                            </MatExpansionPanelHeader>
+                                        </MatExpansionPanelSummary>
+                                        @foreach (var sublinea in FormularioPedidoDTO.ListaPortafolios.Where((x) => x.Linea == linea).OrderBy(x => x.Sublinea).Select(s => s.Sublinea).Distinct())
+                                        {
+                                            <MatExpansionPanelDetails Style="@("padding-bottom: 3px; padding-top: 3px;")">
+                                                <div class="alert alert-secondary" role="alert">
+                                                    <div class="container">
+                                                        <div class="row">
+                                                            <div class="col-4">
+                                                                @sublinea
+                                                            </div>
+                                                            <div class="col-7">
+                                                                (Items Seleccionados:
+                                                                @((from PP in FormularioPedidoDTO.ListaPortafolios
+                                                where PP.Linea == linea && PP.Sublinea == sublinea
+                                                && (PP.CantidadProductoSeleccionado != 0 || PP.CantidadMedicamentoSeleccionado != 0)
+                                                select PP.Referencia).Count())
+                                                                - Total Kilogramos:
+                                                                @((from PP in FormularioPedidoDTO.ListaPortafolios
+                                                where PP.Linea == linea && PP.Sublinea == sublinea
+                                                select PP.Peso * (PP.CantidadProductoSeleccionado + PP.CantidadMedicamentoSeleccionado)).Sum())
+                                                                - Total Bultos:
+                                                                @((from PP in FormularioPedidoDTO.ListaPortafolios
+                                                where PP.Linea == linea && PP.Sublinea == sublinea && PP.UnidadEmpaque == "BULT"
+                                                select (PP.CantidadProductoSeleccionado + PP.CantidadMedicamentoSeleccionado)).Sum()))
+                                                                )
+                                                            </div>
+                                                            <div class="col-1">
+                                                                <MatIconButton Icon="@MatIconNames.Add" OnClick="@(()=>OpenDialog(linea, sublinea))"></MatIconButton>
+                                                            </div>
+                                                        </div>
+                                                        @if ((from P in FormularioPedidoDTO.ListaPortafolios
+                                                             where P.Linea == linea && P.Sublinea == sublinea && P.CantidadProductoSeleccionado != 0
+                                                             select P).Union((from PM in FormularioPedidoDTO.ListaPortafolios
+                                                                              where PM.Linea == linea && PM.Sublinea == sublinea && PM.CantidadMedicamentoSeleccionado != 0
+                                                                              select PM)).Count() != 0)
+                                                        {
+                                                            <table class="table table-hover">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Referencia</th>
+                                                                        <th style="width:30%">Descripcion</th>
+                                                                        <th>Unidad</th>
+                                                                        <th>Factor Empaque</th>
+                                                                        <th>Cantidad</th>
+                                                                        <th>Acciones</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <Virtualize Items="@((from P in FormularioPedidoDTO.ListaPortafolios
+                                                                                        where P.Linea == linea && P.Sublinea == sublinea && (P.CantidadProductoSeleccionado != 0)
+                                                                                          select P).ToList())" Context="item" ItemSize="15">
+                                                                        <ItemContent>
+                                                                            <tr>
+                                                                                <td>@item.Referencia</td>
+                                                                                <td>@item.Descripcion</td>
+                                                                                <td>@item.UnidadEmpaque</td>
+                                                                                <td>@item.Peso</td>
+                                                                                <td>
+
+                                                                                    <input type="number"
+                                                                       style="height:55px;width:50%"
+                                                                       class="form-control"
+                                                                       id="2"
+                                                                       placeholder="Cantidad"
+                                                                       @bind-value="@item.CantidadProductoSeleccionado"
+                                                                       min="1">
+
+                                                                                </td>
+                                                                                <td>
+                                                                                    <MatButton Dense="true" Type="button" Raised="true" @onclick="() => EliminarElementos(item)" Icon="@MatIconNames.Delete"></MatButton>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </ItemContent>
+                                                                    </Virtualize>
+                                                                    <Virtualize Items="@((from PM in FormularioPedidoDTO.ListaPortafolios
+                                                                                        where PM.Linea == linea && PM.Sublinea == sublinea && PM.CantidadMedicamentoSeleccionado != 0
+                                                                                          select PM).ToList())" Context="item" ItemSize="15">
+                                                                        <ItemContent>
+                                                                            <tr>
+                                                                                <td> @item.MedicadoSeleccionado</td>
+                                                                                <td>@item.Descripcion</td>
+                                                                                <td>@item.UnidadEmpaque</td>
+                                                                                <td>@item.Peso</td>
+                                                                                <td>
+                                                                                    <input type="number"
+                                                                       style="height:55px;width:50%"
+                                                                       class="form-control"
+                                                                       id="2"
+                                                                       placeholder="Cantidad"
+                                                                       @bind-value="@item.CantidadMedicamentoSeleccionado"
+                                                                       min="1">
+
+                                                                                </td>
+                                                                                <td>
+                                                                                    <MatButton Dense="true" Type="button" Raised="true" @onclick="() => EliminarElementos(item)" Icon="@MatIconNames.Delete"></MatButton>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </ItemContent>
+                                                                    </Virtualize>
+                                                                </tbody>
+                                                            </table>
+                                                        }
+
+                                                    </div>
+                                                </div>
+                                            </MatExpansionPanelDetails>
+                                        }
+                                    </MatExpansionPanel>
+                                }
+                            </MatAccordion>
+                        </div>
+                    </div>
+                    <MatDialog @bind-IsOpen="@dialogIsOpen" Style="@("max-width: 100%;")">
+                        <MatDialogTitle>
+                            @Linea - @Sublinea (Items Seleccionados:
+                            @((from PP in ProductosPrOvisional
+                    where PP.Linea == Linea
+                    && (PP.CantidadProductoSeleccionado != 0 || PP.CantidadMedicamentoSeleccionado!= 0)
+                    select PP.Referencia).Count())  |
+                            - Total Kilogramos:
+                            @((from PP in ProductosPrOvisional
+                    where PP.Linea == Linea
+                    select PP.Peso * (PP.CantidadProductoSeleccionado + PP.CantidadMedicamentoSeleccionado)).Sum())
+                            - Total Bultos:
+                            @((from PP in FormularioPedidoDTO.ListaPortafolios
+                    where PP.Linea == Linea && PP.UnidadEmpaque == "BULT"
+                    select (PP.CantidadProductoSeleccionado + PP.CantidadMedicamentoSeleccionado)).Sum())
+                            )
+
+                        </MatDialogTitle>
+                        <MatDialogContent>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Referencia
+                                            <input @bind-value="ReferenciaFiltrar" @bind-value:event="oninput"
+                                           @onkeyup="@((KeyboardEventArgs e) => ReferenciaKeyPress(e))"
+                                           type="text" class="form-control" id="nombre" placeholder="Referencia" />
+                                        </th>
+                                        <th style="width:30%">
+                                            Descripcion
+                                            <input @bind-value="DescripcionFiltrar" @bind-value:event="oninput"
+                                           @onkeyup="@((KeyboardEventArgs e) => DescripcionKeyPress(e))"
+                                           type="text" class="form-control" id="nombre" placeholder="Descripcion" />
+                                        </th>
+                                        <th>Unidad</th>
+                                        <th>Factor Empaque</th>
+                                        <th>Precio Unidad</th>
+                                        <th>Cantidad</th>
+                                        <th>Medicado</th>
+                                        <th>Cantidad con medicado</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (PortafolioOrdenado.Any())
+                                    {
+
+                                        <Virtualize Items="PortafolioOrdenado" Context="item" ItemSize="15">
+                                            <ItemContent>
+                                                <tr>
+                                                    <td>@item.Referencia</td>
+                                                    <td>@item.Descripcion</td>
+                                                    <td>@item.UnidadEmpaque</td>
+                                                    <td>@item.Peso</td>
+                                                    <td><LabelNumero Value="@item.PrecioUnidad" /></td>
+                                                    <td>
+                                                        @if (item.clone == false)
+                                            {
+                                                <input type="number"
+                                                   class="form-control"
+                                                   style="height:55px"
+                                                   placeholder="Cantidad"
+                                                   @bind-value="@item.CantidadProductoSeleccionado"
+                                                   min="1" max=100>
+                                            }
+                                        </td>
+                                        <td id="TdMedicados">
+                                            @if (item.Medicados.Count > 1)
+                                            {
+                                                <InputSelect Id="1" class="form-control"
+                                                         style="height:55px"
+                                                         DisplayName="Seleccione Medicado"
+                                                         Value="@item.MedicadoSeleccionado"
+                                                         ValueExpression="@(() => item.MedicadoSeleccionado)"
+                                                         ValueChanged="@((string e) =>   ValidarMedicadoSeleccionado(e, item) )">
+                                                    <option value="">Seleccione Medicado</option>
+                                                    @foreach (var itemMedicado in item.Medicados)
+                                                {
+                                                    if (@itemMedicado.Referencia != null)
+                                                    {
+                                                        <option value="@itemMedicado.Referencia">@itemMedicado.Referencia.Substring(6)</option>
+                                                    }
+                                                }
+                                            </InputSelect>
+                                            }
+                                        </td>
+                                        <td id="TdCantidad">
+                                            @if (item.Medicados.Count > 1)
+                                            {
+                                                <input type="number"
+                                                   style="height:55px;width:50%"
+                                                   class="form-control"
+                                                   id="2"
+                                                   placeholder="Cantidad"
+                                                   disabled="@(string.IsNullOrEmpty(item.MedicadoSeleccionado))"
+                                                   @bind-value="@item.CantidadMedicamentoSeleccionado"
+                                                   min="1"
+                                                   max=item.CantidadProductoSeleccionado>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (item.Medicados.Count > 1)
+                                            {
+                                                @if (item.CantidadMedicamentoSeleccionado != 0)
+                                                {
+                                                    <MatButton Type="button" Dense="true" @onclick="() => ClonarElementos(item)" Icon="@MatIconNames.Add" />
+                                                }
+
+                                                @if (item.clone == true)
+                                                {
+                                                    <MatButton Type="button" Dense="true" @onclick="() => EliminarElementos(item)" Icon="@MatIconNames.Delete" />
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                </ItemContent>
+                            </Virtualize>
+                                    }
+                                    else
+                                    {
+                                        <Cargando />
+                                    }
+                                </tbody>
+                            </table>
+                        </MatDialogContent>
+                        <MatDialogActions>
+                            <MatButton OnClick="@(()=> dialogIsOpen = false)" Icon="@MatIconNames.Shopping_cart" />
+                        </MatDialogActions>
+                    </MatDialog>
+                }
+
+            }
+        </div>
+    </div>
+</EditForm>
+<MatDialog @bind-IsOpen="@CargandoPortafolio">
+    <MatDialogTitle>Cargando informacion del portafolio, espere un momento</MatDialogTitle>
+    <MatDialogContent>
+        <Cargando />
+    </MatDialogContent>
+</MatDialog>
+<MatDialog @bind-IsOpen="@ActualizandoPedido">
+    <MatDialogTitle>Actualizando pedido, espere un momento</MatDialogTitle>
+    <MatDialogContent>
+        <Cargando />
+    </MatDialogContent>
+</MatDialog>
+<MatDialog @bind-IsOpen="@dialogAutogenerarPedido" Style="@("max-width: 100%;")">
+    <MatDialogTitle>
+        <h5>Autogenerar Pedido</h5>
+    </MatDialogTitle>
+    <MatDialogContent>
+        <MatButton Class="button-principal" Raised="true" OnClick="CargarUlitmoPedido" Icon="@MatIconNames.Arrow_back" Label="Cargar Ultimo Pedido" />
+        <br />
+        <br />
+        <p>
+            <MatNumericUpDownField Label="Meses" @bind-Value="@CantidadMesesAutogenerar"></MatNumericUpDownField>
+        </p>
+
+        <br />
+        <MatButton Class="button-principal" Raised="true" OnClick="CargarPromedioPedido" Icon="@MatIconNames.Arrow_back" Label="Promedia pedido de los ultimos meses" />
+
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(()=> dialogAutogenerarPedido = false)">OK</MatButton>
+    </MatDialogActions>
+</MatDialog>
+<MatDialog @bind-IsOpen="@dialogAnularPedido" Style="@("max-width: 100%;")">
+    <MatDialogTitle>
+        <h5>Anular Pedido</h5>
+    </MatDialogTitle>
+    <MatDialogContent>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Observaciones</span>
+            </div>
+            <textarea class="form-control" aria-label="Observaciones" @bind="Observaciones"></textarea>
+        </div>
+        <br /><br />
+        <MatButton Outlined="true" Type="button" OnClick="@(()=>OpenDialog(null, null))">
+            Cancelar
+        </MatButton>
+        <MatButton Outlined="true" Type="button" OnClick="@(Anular)">
+            Anular pedido
+        </MatButton>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(()=> dialogAnularPedido = false)">OK</MatButton>
+    </MatDialogActions>
+</MatDialog>

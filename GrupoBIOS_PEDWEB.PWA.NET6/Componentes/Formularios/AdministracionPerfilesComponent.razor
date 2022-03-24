@@ -1,0 +1,65 @@
+﻿@inherits AdministracionPerfilesComponentBase
+@if (Roles != null)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <input @bind-value="FiltroNombre" @bind-value:event="oninput"
+                       @onkeyup="@((KeyboardEventArgs e) => NombreKeyPress(e))"
+                       type="text" class="form-control" id="Nombre" placeholder="Nombre" />
+            </div>
+            <div class="col">
+                <input @bind-value="FiltroDescripcion" @bind-value:event="oninput"
+                       @onkeyup="@((KeyboardEventArgs e) => DescripcionKeyPress(e))"
+                       type="text" class="form-control" id="Descripcion" placeholder="Descripcion" />
+            </div>
+            <div class="col">
+                <input @bind-value="FiltroEstado" @bind-value:event="oninput"
+                       @onkeyup="@((KeyboardEventArgs e) => EstadoKeyPress(e))"
+                       type="text" class="form-control" id="Estado" placeholder="Estado" />
+            </div>
+        </div>
+        <br /><br />
+        <div class="row">
+            <div class="col" style="text-align: center">
+                <MatButton Outlined="true" Icon="@MatIconNames.Add" @onclick="NuevoRol">
+                    Agregar
+                </MatButton>
+            </div>
+        </div>
+        <br /><br />
+        <div class="row">
+            <div class="col" style="text-align: center">
+                <h5>En total hay @CantidadRegistros registros </h5>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-12 ">
+                <MatTable Items="@ListaOrdenadaRoles" AllowSelection="@true" UseSortHeaderRow="true" SelectionChanged="SelectionChangedEvent"
+                          PageLabel="Pagina" PageRecordCountLabel="Productos por pagina: ">
+                    <MatTableHeader>
+                        <MatSortHeaderRow SortChanged="@SortDataRoles">
+                            <MatSortHeader SortId="Nombre"><span style="width:250px">Nombre</span></MatSortHeader>
+                            <MatSortHeader SortId="Descripcion"><span style="width:400px">Descripcion</span></MatSortHeader>
+                            <MatSortHeader SortId="Estado"><span style="width: 150px">Estado</span></MatSortHeader>
+                            <MatSortHeader SortId="Acciones"><span style="width: 40px">Acciones</span></MatSortHeader>
+                        </MatSortHeaderRow>
+                    </MatTableHeader>
+                    <MatTableRow>
+                            <td>@context.Nombre</td>
+                            <td>@context.Descripcion</td>
+                            <td>@context.oEstado</td>
+                            <td>
+                                <MatButton Dense="true" Disabled="true" Icon="@MatIconNames.Find_in_page"></MatButton>
+                                <MatButton Dense="true" OnClick="@(_ => OpenDialog(context.Nombre))" Icon="@MatIconNames.Edit"></MatButton>
+                                <MatButton Dense="true" OnClick="@(_ => EliminarRol(context.Id))" Icon="@MatIconNames.Delete"></MatButton>
+                            </td>
+                    </MatTableRow>
+                </MatTable>
+            </div>
+        </div>
+    </div>
+
+}
+

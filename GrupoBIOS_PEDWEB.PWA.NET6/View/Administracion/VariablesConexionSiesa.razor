@@ -1,0 +1,350 @@
+﻿@page "/variablesConexionSiesa"
+@inject IGestionCompanias_ViewModel GestionCompanias_ViewModel
+@inject RefrescarAppState refrescarAppState
+@inject IMatDialogService MatDialogService
+@attribute [Authorize(Roles = "6,7,8,9")]
+    @if (GestionCompanias_ViewModel.ListaCompanias != null)
+    @if (GestionCompanias_ViewModel.ListaCompanias.Any())
+    { }
+<div class="grid-container">
+    <br />
+    <EditForm Model="GestionCompanias_ViewModel.FormularioCompañiaDTO">
+        <DataAnnotationsValidator />
+        <div class="form-group">
+            <div class="row">
+                <div class="col">
+                    <h5>Seleccione una compañia :</h5>
+                    <br /><br />
+
+                    <select class="form-control" value="@CompaniaSeleccionada"
+                            @onchange="@((ChangeEventArgs e) => CompaniaHasChanged(e))">
+                        <option value="0">SELECCIONE UNA COMPAÑIA</option>
+                        @if (GestionCompanias_ViewModel.ListaCompanias.Any())
+                        {
+                            @foreach (var item in GestionCompanias_ViewModel.ListaCompanias)
+                            {
+                                <option value="@item.Id">@item.Nombre</option>
+                            }
+                        }
+                    </select>
+
+                    <br /><br />
+                    <MatButton Outlined="true" OnClick="@ActualizarCompania"> Guardar Cambios </MatButton>
+                    <MatButton Outlined="true" OnClick="@(_=>OpenDialogFromService())"> Crear Compañia  </MatButton>
+                </div>
+                <div class="col">
+                    <br /><br />
+                    @if (GestionCompanias_ViewModel.FormularioCompañiaDTO != null)
+                    {
+                        <MatAccordion Multi="true">
+                            <MatExpansionPanel Style="box-shadow: none;">
+                                <MatExpansionPanelSummary>
+                                    <MatExpansionPanelHeader>
+                                        <div>
+                                            Configuración Siesa
+                                        </div>
+                                    </MatExpansionPanelHeader>
+                                </MatExpansionPanelSummary>
+                                <MatExpansionPanelDetails Class="detalles-acordeon">
+                                    <div class="content">
+                                        <div class="row">
+                                            <div class="col-12 col-lg-8 mb-1">
+                                                <MatStringField class="form-control" @bind-Value="@GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.NombreDB" Label="Base datos Siesa"></MatStringField>
+                                                <ValidationMessage For="@(() => GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.NombreDB)" />
+                                            </div>
+                                            <div class="col-12 col-lg-4 mb-1">
+                                                <MatTextField class="form-control" @bind-Value="@GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.IdSiesa" Label="Id Siesa"></MatTextField>
+                                                <ValidationMessage For="@(() => GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.IdSiesa)" />
+                                            </div>
+                                            <div class="col-12 col-lg-8 mb-1">
+                                                <MatStringField class="form-control" @bind-Value="@GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.URLWebServicesSiesa" Label="URL web services"></MatStringField>
+                                                <ValidationMessage For="@(() => GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.NombreDB)" />
+                                            </div>
+                                            <div class="col-12 col-lg-4 mb-1">
+                                                <MatStringField class="form-control" @bind-Value="@GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.NombreConexion" Label="Nombre conexión web services"></MatStringField>
+                                                <ValidationMessage For="@(() => GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.NombreDB)" />
+                                            </div>
+                                            <div class="col-12 col-lg-4 mb-1">
+                                                <MatTextField class="form-control" @bind-Value="@GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.Usuario" Label="Usuario"></MatTextField>
+                                                <ValidationMessage For="@(() => GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.IdSiesa)" />
+                                            </div>
+                                            <div class="col-12 col-lg-4">
+                                                <MatTextField class="form-control" @bind-Value="@GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.Clave" Label="Contraseña"></MatTextField>
+                                                <ValidationMessage For="@(() => GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.IdSiesa)" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </MatExpansionPanelDetails>
+                            </MatExpansionPanel>
+                            <MatExpansionPanel Style="box-shadow: none;">
+                                <MatExpansionPanelSummary>
+                                    <MatExpansionPanelHeader>
+                                        <div>
+                                            Bodegas para pedidos
+                                        </div>
+                                    </MatExpansionPanelHeader>
+                                </MatExpansionPanelSummary>
+                                <MatExpansionPanelDetails Class="detalles-acordeon">
+                                    <div class="content">
+                                        <div class="row">
+                                            <div class="col-12 col-lg-12 mb-1">
+                                                @if (GestionCompanias_ViewModel.FormularioCompañiaDTO.CentrosOperativos != null)
+                                                {
+                                                    <select class="form-control"
+                                                    @onchange="@((ChangeEventArgs e) => CentroOperativoSucursalHasChanged(e))">
+                                                        <option value="0">Seleccione centro operativo</option>
+                                                        @if (GestionCompanias_ViewModel.FormularioCompañiaDTO.CentrosOperativos.Any())
+                                                        {
+                                                            @foreach (var item in GestionCompanias_ViewModel.FormularioCompañiaDTO.CentrosOperativos)
+                                                            {
+                                                                <option value="@item.Id">@item.Nombre</option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                }
+                                            </div>
+                                        </div>
+                                        @if (GestionCompanias_ViewModel.BodegaDTO != null)
+                                        {
+                                            <div class="row">
+                                                <div class="col-12 col-lg-6 mb-1">
+                                                    <MatStringField class="form-control" @bind-Value="@GestionCompanias_ViewModel.BodegaDTO.BodegaCentroOperativo.BodegaNoMedicado" Label="Bodega no medicado"></MatStringField>
+                                                    <ValidationMessage For="@(() => GestionCompanias_ViewModel.BodegaDTO.BodegaCentroOperativo.BodegaNoMedicado)" />
+                                                </div>
+                                                <div class="col-12 col-lg-6 mb-1">
+                                                    <MatStringField class="form-control" @bind-Value="@GestionCompanias_ViewModel.BodegaDTO.BodegaCentroOperativo.BodegaMedicado" Label="Bodega medicado"></MatStringField>
+                                                    <ValidationMessage For="@(() => GestionCompanias_ViewModel.BodegaDTO.BodegaCentroOperativo.BodegaMedicado)" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="container">
+                                                    <MatAccordion>
+                                                        @foreach (var linea in GestionCompanias_ViewModel.BodegaDTO.BodegaSublineas.OrderBy(x => x.Linea).Select(s => s.Linea).Distinct())
+                                                        {
+                                                            <MatExpansionPanel>
+                                                                <MatExpansionPanelSummary>
+                                                                    <MatExpansionPanelHeader>
+                                                                        <div>
+                                                                            <p style="margin-top:revert;width:max-content">
+                                                                                @linea
+                                                                            </p>
+                                                                        </div>
+                                                                    </MatExpansionPanelHeader>
+                                                                </MatExpansionPanelSummary>
+                                                                @foreach (var sublinea in GestionCompanias_ViewModel.BodegaDTO.BodegaSublineas.Where((x) => x.Linea == linea).OrderBy(x => x.Sublinea))
+                                                                {
+                                                                    <MatExpansionPanelDetails Style="@("padding-bottom: 3px; padding-top: 3px;")">
+                                                                        <div class="alert alert-secondary" role="alert">
+                                                                            <div class="container">
+                                                                                <div class="row">
+                                                                                    <div class="col-4">
+                                                                                        @sublinea.Sublinea
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="row">
+                                                                                    <div class="col-12 col-lg-6 mb-1">
+                                                                                        <MatStringField class="form-control" @bind-Value="@sublinea.BodegaNoMedicado" Label="Bodega no medicado"></MatStringField>
+                                                                                        <ValidationMessage For="@(() => sublinea.BodegaNoMedicado)" />
+                                                                                    </div>
+                                                                                    <div class="col-12 col-lg-6 mb-1">
+                                                                                        <MatStringField class="form-control" @bind-Value="@sublinea.BodegaMedicado" Label="Bodega medicado"></MatStringField>
+                                                                                        <ValidationMessage For="@(() => sublinea.BodegaMedicado)" />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </MatExpansionPanelDetails>
+                                                                }
+                                                            </MatExpansionPanel>
+                                                        }
+                                                    </MatAccordion>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </MatExpansionPanelDetails>
+                            </MatExpansionPanel>
+                            <MatExpansionPanel Style="box-shadow: none;">
+                                <MatExpansionPanelSummary>
+                                    <MatExpansionPanelHeader>
+                                        <div>
+                                            Terminos y Condiciones
+                                        </div>
+                                    </MatExpansionPanelHeader>
+                                </MatExpansionPanelSummary>
+                                <MatExpansionPanelDetails Class="detalles-acordeon">
+                                    <div class="content">
+                                        @if (GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.TerminosYCondiciones != null)
+                                        {
+                                            <TextEditor @ref="@QuillHtml">
+                                                <ToolbarContent>
+                                                    <select class="ql-header">
+                                                        <option selected=""></option>
+                                                        <option value="1"></option>
+                                                        <option value="2"></option>
+                                                        <option value="3"></option>
+                                                        <option value="4"></option>
+                                                        <option value="5"></option>
+                                                    </select>
+                                                    <span class="ql-formats">
+                                                        <button class="ql-bold"></button>
+                                                        <button class="ql-italic"></button>
+                                                        <button class="ql-underline"></button>
+                                                        <button class="ql-strike"></button>
+                                                    </span>
+                                                    <span class="ql-formats">
+                                                        <select class="ql-color"></select>
+                                                        <select class="ql-background"></select>
+                                                    </span>
+                                                    <span class="ql-formats">
+                                                        <button class="ql-list" value="ordered"></button>
+                                                        <button class="ql-list" value="bullet"></button>
+                                                    </span>
+                                                    <span class="ql-formats">
+                                                        <button class="ql-link"></button>
+                                                    </span>
+                                                </ToolbarContent>
+                                                <EditorContent>
+                                                    @* <h4>This Toolbar works with HTML</h4>
+                                                        <a href="http://BlazorHelpWebsite.com">
+                                                        BlazorHelpWebsite.com
+                                                        </a>*@
+                                                </EditorContent>
+                                            </TextEditor>
+                                            <br />
+                                            @*<MatTooltip Tooltip="Salvar terminos y condiciones">*@
+                                            <MatButton Class="button-principal" Raised="true" @onclick="GetHTML" Icon="@MatIconNames.Done" />
+                                            @if (obtener)
+                                            {
+                                                @*<MatTooltip Tooltip="Refrescar terminos y condiciones ">*@
+                                                <MatButton Class="button-principal" Raised="true" @onclick="SetHTML" Icon="@MatIconNames.Find_replace" />
+                                                @*</MatTooltip>*@
+                                            }
+
+                                            <br />
+                                            <br />
+                                        }
+                                    </div>
+                                </MatExpansionPanelDetails>
+                            </MatExpansionPanel>
+                            <MatExpansionPanel Style="box-shadow: none;">
+                                <MatExpansionPanelSummary>
+                                    <MatExpansionPanelHeader>
+                                        <div>
+                                            Configuracion E-mail
+                                        </div>
+                                    </MatExpansionPanelHeader>
+                                </MatExpansionPanelSummary>
+                                <MatExpansionPanelDetails Class="detalles-acordeon">
+                                      <div class="content">
+                                        <div class="row">
+                                            <div class="col-12 col-lg-8 mb-1">
+                                                <MatTextField class="form-control" @bind-Value="@GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.Puerto" Label="Puerto"></MatTextField>
+                                                <ValidationMessage For="@(() => GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.Puerto)" />
+                                            </div>
+                                            <div class="col-12 col-lg-4 mb-1">
+                                                <MatTextField class="form-control" @bind-Value="@GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.Host" Label="Host"></MatTextField>
+                                                <ValidationMessage For="@(() => GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.Host)" />
+                                            </div>
+                                            <div class="col-12 col-lg-8 mb-1">
+                                                <MatStringField class="form-control" @bind-Value="@GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.Remitente" Label="Email Remitente"></MatStringField>
+                                                <ValidationMessage For="@(() => GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.Remitente)" />
+                                            </div>
+                                            <div class="col-12 col-lg-4 mb-1">
+                                                <MatStringField class="form-control" @bind-Value="@GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.NombreRemitente" Label="Nombre Remitente"></MatStringField>
+                                                <ValidationMessage For="@(() => GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.NombreRemitente)" />
+                                            </div>
+                                            <div class="col-12 col-lg-4 mb-1">
+                                                <MatTextField class="form-control" @bind-Value="@GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.NombreUsuarioEmail" Label="Usuario Email"></MatTextField>
+                                                <ValidationMessage For="@(() => GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.NombreUsuarioEmail)" />
+                                            </div>
+                                            <div class="col-12 col-lg-4">
+                                                <MatTextField class="form-control" @bind-Value="@GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.ClaveEmail" Label="Contraseña Email"></MatTextField>
+                                                <ValidationMessage For="@(() => GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.ClaveEmail)" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </MatExpansionPanelDetails>
+                            </MatExpansionPanel>
+                        </MatAccordion>
+                    }
+                </div>
+            </div>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+
+    [CascadingParameter] private Task<AuthenticationState> AuthenticationState { get; set; }
+    [CascadingParameter] public AppState AppState { get; set; }
+    List<string> Fonts = new List<string> { "MSGothic", "Impact", "Courier", "Comic", "Bahnschrift" };
+    TextEditor QuillHtml;
+    string QuillHTMLContent;
+    public bool obtener { get; set; } = true;
+    private AuthenticationState AuthState { get; set; }
+    int CompaniaSeleccionada = 0;
+
+    protected async override Task OnInitializedAsync()
+    {
+        AppState.TituloPagina = "Variables de conexion";
+        await refrescarAppState.LlamarActualizarContenedoresSuperiores();
+        await GestionCompanias_ViewModel.CargarCompanias();
+        AuthState = await AuthenticationState;
+        StateHasChanged();
+    }
+
+    public async void CompaniaHasChanged(ChangeEventArgs e)
+    {
+
+        CompaniaSeleccionada = int.Parse(e.Value.ToString());
+
+        if (CompaniaSeleccionada != 0)
+        {
+            await GestionCompanias_ViewModel.ConstruirFormularioCompañiaDTO(CompaniaSeleccionada);
+            StateHasChanged();
+        }
+    }
+    public async void CentroOperativoSucursalHasChanged(ChangeEventArgs e)
+    {
+
+        var centroOperativoSeleccionado = e.Value.ToString();
+
+        if (centroOperativoSeleccionado != "0")
+        {
+            await GestionCompanias_ViewModel.ConstruirBodegaDTO(centroOperativoSeleccionado, CompaniaSeleccionada);
+            StateHasChanged();
+        }
+    }
+    async void ActualizarCompania()
+    {
+        await GestionCompanias_ViewModel.ActualizarCompaniaAsync(GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania);
+        StateHasChanged();
+    }
+
+    async Task OpenDialogFromService()
+    {
+        await MatDialogService.OpenAsync(typeof(GuardarCompaniaModalForm), null);
+    }
+    public async Task GetHTML()
+    {
+        QuillHTMLContent = await this.QuillHtml.GetHTML();
+        if (QuillHTMLContent != null)
+        {
+            //await GestionCompanias_ViewModel.SalvarTerminos(QuillHTMLContent);
+            GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.TerminosYCondiciones = QuillHTMLContent;
+        }
+        StateHasChanged();
+    }
+
+    public async Task SetHTML()
+    {
+        await this.QuillHtml.LoadHTMLContent(GestionCompanias_ViewModel.FormularioCompañiaDTO.Compania.TerminosYCondiciones);
+        obtener = false;
+        StateHasChanged();
+    }
+
+
+
+}

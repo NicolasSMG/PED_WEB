@@ -1,0 +1,44 @@
+﻿@inject IMatDialogService MatDialogService
+@inject IGestionCompanias_ViewModel GestionCompanias_ViewModel
+
+
+<MatDialogTitle style="display: flex; align-items: center;">
+    <div style="flex: 1;">Agregar nueva compañia</div>
+    <div @onclick="@(_=>CloseDialog())" style="cursor: pointer;">
+        <MatIcon Icon="@MatIconNames.Close"></MatIcon>
+    </div>
+</MatDialogTitle>
+<MatDialogContent>
+    <div class="content">
+        <MatStringField @bind-Value="@compania.Nombre" Label="Nombre Compañia"></MatStringField>
+        <MatTextField @bind-Value="@compania.IdSiesa" Label="Id Siesa"></MatTextField>
+        <MatStringField @bind-Value="@compania.NombreDB" Label="Nombre DB"></MatStringField>
+
+    </div>
+    <div class="content">
+        <MatButton OnClick="@(_ => GuardarNuevaCompania())">Guardar compañia</MatButton>
+        <MatButton OnClick="@(_ => CloseDialog())">Cerrar</MatButton>
+    </div>
+</MatDialogContent>
+<MatDialogActions>
+
+</MatDialogActions>
+
+@code
+{
+    Compania compania = new Compania();
+    [Parameter]
+    public int Value { get; set; } = 1;
+    [CascadingParameter]
+    public MatDialogReference DialogReference { get; set; }
+
+    async Task GuardarNuevaCompania()
+    {
+        await GestionCompanias_ViewModel.GuardarCompaniaAsync(compania);
+    }
+
+    async Task CloseDialog()
+    {
+        DialogReference.Close("Test");
+    }
+}

@@ -1,0 +1,122 @@
+﻿@inherits FiltrarPedidosBase
+
+<div class="container">
+    <div class="row">
+            @*<div class="col-12 col-lg-4 mt-2">
+                @if (FormularioPedidoDTO.ListaClientes.Count() > 1)
+                {
+                    <MatAutocompleteList Items="@FormularioPedidoDTO.ListaClientes.Select(x => x.NombreNit)" TItem="string" Style="width:100%" FullWidth="true" Value="PedidoDTO.Pedido.ClienteNombre"  Label="Seleccione un cliente" ValueChanged="@((string value) => ClienteHasChanged(value))"></MatAutocompleteList>
+                }
+
+                @if (FormularioPedidoDTO.ListaClientes.Count() == 1)
+                {
+                    <MatTextField @bind-Value="@UnicoCliente" HelperTextPersistent="true" Style="width:100%" Label="Cliente" ReadOnly="true"></MatTextField>
+                }
+
+            </div>
+            <div class="col-12 col-lg-4 mt-2">
+                <select class="form-control"
+                        disabled="@(FormularioPedidoDTO.Sucursales != null && FormularioPedidoDTO.Sucursales.Count == 1)"
+                        title="Seleccione sucursal"
+                        value="@PedidoDTO.Pedido.SucursalId_SIESA"
+                        Style="width:100%;height:90%"
+                        @onchange="@((ChangeEventArgs e) => SucursalChanged(e))">
+                    <option value="null" selected> Seleccione una sucursal</option>
+                    @if (FormularioPedidoDTO.Sucursales != null)@if (FormularioPedidoDTO.Sucursales.Count != 0)
+                        {
+                            @foreach (var sucursal in FormularioPedidoDTO.Sucursales)
+                            {
+                                <option value="@sucursal.Id">@sucursal.Id @sucursal.Descripcion</option>
+                            }
+                        }
+                </select>
+            </div>
+            <div class="col-12 col-lg-4 mt-2">
+                <select class="form-control"
+                        title="Seleccione punto de envio"
+                        value="@PedidoDTO.Pedido.PuntoEnvio_SIESA"
+                        Style="width:100%;height:90%"
+                        @onchange="@((ChangeEventArgs e) => PuntosEnvioChanged(e))">
+                    <option value="0">Seleccione punto de envio</option>
+                    @if (FormularioPedidoDTO.PuntosDeEnvio != null)@if (FormularioPedidoDTO.PuntosDeEnvio.Count != 0)
+                        {
+                            @foreach (var puntoEnvio in FormularioPedidoDTO.PuntosDeEnvio)
+                            {
+                                <option value="@puntoEnvio.Id">@puntoEnvio.Id @puntoEnvio.Descripcion</option>
+                            }
+                        }
+                </select>
+                <ValidationMessage For="@(() => FormularioPedidoDTO.PuntosDeEnvio)" />
+            </div>*@
+        <div class="col">
+            <input @bind-value="FiltrosPedido.FiltroCliente" @bind-value:event="oninput"
+                   @onkeyup="@((KeyboardEventArgs e) => OnParametersSetAsync(e))"
+                   type="text" class="form-control" id="ClienteIpt" placeholder="Cliente" />
+            <br />
+            <input @bind-value="FiltrosPedido.FiltroNumeroPedido" @bind-value:event="oninput"
+                   @onkeyup="@((KeyboardEventArgs e) => OnParametersSetAsync(e))"
+                   type="text" class="form-control" id="NumPedidoIpt" placeholder="Numero Pedido" />
+        </div>
+        <div class="col">
+            <input @bind-value="FiltrosPedido.FiltroPedidoSIESA" @bind-value:event="oninput"
+                   @onkeyup="@((KeyboardEventArgs e) => OnParametersSetAsync(e))"
+                   type="text" class="form-control" id="PedidoUNOEEIpt" placeholder="PedidoUNOEE" />
+            <br />
+            <input @bind-value="FiltrosPedido.FiltroSucursal" @bind-value:event="oninput"
+                   @onkeyup="@((KeyboardEventArgs e) => OnParametersSetAsync(e))"
+                   type="text" class="form-control" id="SucursalIpt" placeholder="Sucursal" />
+        </div>
+        <div class="col">
+            <input @bind-value="FiltrosPedido.FiltroPuntoEnvio" @bind-value:event="oninput"
+                   @onkeyup="@((KeyboardEventArgs e) => OnParametersSetAsync(e))"
+                   type="text" class="form-control" id="PuntoEnvioIpt" placeholder="Punto de envio" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col" style="text-align: center">
+            <MatButton Outlined="true" Icon="@MatIconNames.Add" @onclick="RedirectTo">
+                Agregar
+            </MatButton>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 ">
+            <TablaResponsive Items="@Pedidos">
+                <TableHeader>
+                    <th><span>N° Pedido</span></th>
+                    <th><span>Pedido UNOEE</span></th>
+                    <th><span style="width: 110px;">Sucursal</span></th>
+                    <th><span style="width: 110px;">Punto de envio</span></th>
+                    <th><span>Fecha Pedido</span></th>
+                    <th><span>Estado</span></th>
+                    <th><span style="width: 110px;">Creado por</span></th>
+                    <th><span>Acciones</span></th>
+                </TableHeader>
+                <RowTemplate>
+                    <td>@context.Id</td>
+                    <td>@context.PedidoId_SIESA</td>
+                    <td>@context.Sucursal</td>
+                    <td>@context.PuntoEnvio</td>
+                    <td>@context.FechaPedido.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>@context.Estado</td>
+                    <td>@context.UsuarioCreador</td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <MatIconButton Disabled="true" OnClick="@(_=> OpenDialogFromService())" Icon="@MatIconNames.Payment"></MatIconButton>
+                            <MatIconButton Disabled="true" Icon="@MatIconNames.Find_in_page"></MatIconButton>
+                            <MatIconButton Link="@($"Pedido/Editar/{context.Id}")" Icon="@MatIconNames.Edit"></MatIconButton>
+                        </div>
+                    </td>
+                </RowTemplate>
+            </TablaResponsive>
+        <Paginacion PaginaActual="FiltrosPedido.Pagina" 
+        PaginaSeleccionada="PaginaSeleccionada" 
+        PaginasTotales="PaginasTotales" 
+        RegistrosTotales ="RegistrosTotales"
+         TipoRegistros = "pedido(s)"/>
+    </div>
+    </div>
+</div>
+
+
+

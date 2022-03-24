@@ -1,0 +1,77 @@
+﻿@typeparam Titem
+@inherits InputBase<Titem>
+@inject IJSRuntime jSRuntime
+
+
+<input id="@Id" lang="en" @attributes="AdditionalAttributes" class="@CssClass" value="@CurrentValue" @oninput="EventCallback.Factory.CreateBinder<string>(this, __value => CurrentValueAsString = __value, CurrentValueAsString)" />
+@code {
+    [Parameter] public string Id { get; set; } = null;
+    [Parameter] public int NumeroDecimales { get; set; } = 2;
+    [Parameter] public double min { get; set; } = -2147483648;
+    [Parameter] public double max { get; set; } = 2147483647;
+
+
+    protected override void OnInitialized()
+    {
+        if (Id == null)
+            Id = Guid.NewGuid().ToString();
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (NumeroDecimales == 0)
+            {
+                await jSRuntime.InvokeVoidAsync("maskEntero", Id, min, max);
+            }
+            else
+            {
+                await jSRuntime.InvokeVoidAsync("maskDecimal", Id, NumeroDecimales, min, max);
+            }
+        }
+    }
+    protected override bool TryParseValueFromString(string value, out Titem result, out string validationErrorMessage)
+    {
+        if (typeof(Titem) == typeof(double))
+        {
+            var cultura = (CultureInfo)CultureInfo.InvariantCulture.Clone();
+            cultura.NumberFormat.NumberDecimalSeparator = ".";
+            cultura.NumberFormat.NumberGroupSeparator = ",";
+            if (double.TryParse(value.Replace(",", ""), NumberStyles.Float, cultura, out var resultInt))
+            {
+                result = (Titem)(object)resultInt;
+                validationErrorMessage = null;
+                return true;
+            }
+            else
+            {
+                result = default;
+                validationErrorMessage = "El valor elegido no es un número válido.";
+                return false;
+            }
+        }
+        else if (typeof(Titem) == typeof(int))
+        {
+            if (int.TryParse(value.Replace(",", ""), out var resultInt))
+            {
+                result = (Titem)(object)resultInt;
+                validationErrorMessage = null;
+                return true;
+            }
+            else
+            {
+                result = default;
+                validationErrorMessage = "El valor elegido no es un número válido.";
+                return false;
+            }
+        }
+        else
+        {
+            result = default;
+            validationErrorMessage = "El valor elegido no es un número válido.";
+            return true;
+        }
+    }
+
+}
+

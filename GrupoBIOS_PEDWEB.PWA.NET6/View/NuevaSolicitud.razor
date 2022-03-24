@@ -1,0 +1,107 @@
+﻿@page "/NuevaSolicitud"
+@using GrupoBIOS_PEDWEB.PWA.NET6.ViewModel.Interfaces
+@inject INuevaSolicitud_ViewModel NuevaSolicitud_ViewModel
+
+@if (NuevaSolicitud_ViewModel.SolicitudCliente != null)
+{
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+            <div class="form-inline alert  alert-dark" role="alert">
+                <div class="form-group mx-sm-2 mb-2">
+                    <MatButton Class="button-principal" Raised="true" Link="/">Atras</MatButton>
+                </div>
+            </div>
+            <EditForm Model="NuevaSolicitud_ViewModel.SolicitudCliente"
+                  OnValidSubmit="OpenModal">
+                <DataAnnotationsValidator />
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 col-lg-4 mt-2">
+                            <MatSelect FullWidth="true" Label="Centro Operativo" @bind-Value="@NuevaSolicitud_ViewModel.SolicitudCliente.CentroOperativo_SIESA">
+                                <MatOptionString Value="0"></MatOptionString>
+                                @if (NuevaSolicitud_ViewModel.FormularioSolicitudDTO != null)
+                                {
+                                @foreach (var centroOperativo in NuevaSolicitud_ViewModel.FormularioSolicitudDTO.CentrosOperativos)
+                                    {
+                                    <MatOptionString Value="@centroOperativo.Id">@centroOperativo.Nombre</MatOptionString>
+                                    }
+                                }
+                        </MatSelect>
+                        <ValidationMessage For="@(()=>NuevaSolicitud_ViewModel.SolicitudCliente.CentroOperativo_SIESA)" />
+                    </div>
+                    <div class="col-12 col-lg-4 mt-2">
+                        <MatTextField Type="@("number")"
+                                      @bind-Value="NuevaSolicitud_ViewModel.SolicitudCliente.Nit"
+                                      HelperTextPersistent="true"
+                                      Style="width:100%"
+                                      Label="Nit"></MatTextField>
+                        <ValidationMessage For="@(()=>NuevaSolicitud_ViewModel.SolicitudCliente.Nit)" />
+                    </div>
+                    <div class="col-12 col-lg-4 mt-2">
+                        <MatTextField @bind-Value="NuevaSolicitud_ViewModel.SolicitudCliente.NombreEmpresa" HelperTextPersistent="true" Style="width:100%" Label="Nombre empresa"></MatTextField>
+                        <ValidationMessage For="@(()=>NuevaSolicitud_ViewModel.SolicitudCliente.NombreEmpresa)" />
+                    </div>
+                    <div class="col-12 col-lg-4 mt-2">
+                        <MatTextField Type="@("number")" @bind-Value="NuevaSolicitud_ViewModel.SolicitudCliente.CedulaSolicitante" HelperTextPersistent="true" Style="width:100%" Label="Cedula solicitante"></MatTextField>
+                        <ValidationMessage For="@(()=>NuevaSolicitud_ViewModel.SolicitudCliente.CedulaSolicitante)" />
+                    </div>
+                    <div class="col-12 col-lg-4 mt-2">
+                        <MatTextField @bind-Value="NuevaSolicitud_ViewModel.SolicitudCliente.NombreSolicitante" HelperTextPersistent="true" Style="width:100%" Label="Nombre solicitante"></MatTextField>
+                        <ValidationMessage For="@(()=>NuevaSolicitud_ViewModel.SolicitudCliente.NombreSolicitante)" />
+                    </div>
+                    <div class="col-12 col-lg-4 mt-2">
+                        <MatTextField @bind-Value="NuevaSolicitud_ViewModel.SolicitudCliente.CorreoSolicitante" HelperTextPersistent="true" Style="width:100%" Label="Correo solicitante"></MatTextField>
+                        <ValidationMessage For="@(()=>NuevaSolicitud_ViewModel.SolicitudCliente.CorreoSolicitante)" />
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mt-2">
+                            <MatTextField @bind-Value="NuevaSolicitud_ViewModel.SolicitudCliente.Observaciones" HelperTextPersistent="true" Style="width:100%" Label="Observaciones" TextArea="true" FullWidth="true"></MatTextField>
+                            <ValidationMessage For="@(()=>NuevaSolicitud_ViewModel.SolicitudCliente.Observaciones)" />
+                        </div>
+                    </div>
+                    <ValidationSummary />
+
+                    <input type="submit" class="fadeIn fourth" value="Enviar solicitud">
+                    @if(dialogIsOpen)
+                    {
+                    <TerminosYCondicionesModalForm DialogIsOpen="dialogIsOpen" Aceptar="EnviarSolicitud" Regresar="CloseModal"/>
+                    }
+                </div>
+            </div>
+        </EditForm>
+    </div>
+</div>
+}
+@code {
+    public bool MostrarDetalleSolicitud { get; set; }
+    public SolicitudCliente DetalleSolicitud { get; set; }
+    public bool dialogIsOpen { get; set; } = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await NuevaSolicitud_ViewModel.InicializarViewModel();
+        dialogIsOpen = false;
+    }
+    private async Task EnviarSolicitud()
+    {
+        await NuevaSolicitud_ViewModel.EnviarSolicitud();
+        CloseModal();
+    }
+    private void InformacionSolicitud(SolicitudCliente SolicitudCliente)
+    {
+        DetalleSolicitud = SolicitudCliente;
+        MostrarDetalleSolicitud = true;
+        StateHasChanged();
+    }
+
+    private void CloseModal()
+    {
+        dialogIsOpen = false;
+        StateHasChanged();
+    }
+
+    private void OpenModal()
+    {
+        dialogIsOpen = true;    
+    }
+}

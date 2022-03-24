@@ -1,0 +1,139 @@
+﻿@page "/Pedido/ImportarExcel"
+@inject RefrescarAppState refrescarAppState
+
+@inject IJSRuntime js
+@*@inject ISettings settings*@
+@*@inject NavigationManager NavigationManager*@
+@inject IImportarPedidoExcel_ViewModel ImportarPedidoExcelViewModel
+
+<div class="container p-3" style="background-color:white;">
+
+    <div class="row">
+        <div class="col">
+            <div class="d-flex justify-content-between">
+                <div class="p-2">
+                    @if (!ImportarPedidoExcelViewModel.Cargando)
+                    {
+                        <label for="csv-file-oportunidadcarrera" style="margin-top: 22px;" class="btn btn-success">Selecione archivo</label>
+                    }
+
+                    <InputFile id="csv-file-oportunidadcarrera" style="margin-top: 22px; display: none;" @onclick="ImportarPedidoExcelViewModel.LimpiarImportacion" OnChange="ImportarPedidoExcelViewModel.ArchivoOnChanged" accept=".xlsx"></InputFile>
+                </div>
+                <div class="p-2">
+                    <button @onclick="ImportarDatos" disabled="@(!ImportarPedidoExcelViewModel.ArchivoCargado)" class="btn btn-success">Importar archivo</button>
+
+                    <MatIconButton @onclick="ImportarPedidoExcelViewModel.LimpiarImportacion" Style="color: #2684C8" disabled="@(ImportarPedidoExcelViewModel.Cargando)">
+                        <i class="fas fa-sync"></i>
+
+                    </MatIconButton>
+                    <MatIconButton @onclick="ImportarPedidoExcelViewModel.DescargarPlantillaOnClick" Style="color: #2684C8" disabled="@(ImportarPedidoExcelViewModel.Cargando)">
+                        <i class="fas fa-file-download"></i>
+                    </MatIconButton>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (!ImportarPedidoExcelViewModel.NoHayArchivo)
+    {
+        @if (ImportarPedidoExcelViewModel.Cargando)
+        {
+            <Cargando />
+        }
+        else if (ImportarPedidoExcelViewModel.ValidacionesImportarPedidoDTO.PedidoDTO == null
+        || ImportarPedidoExcelViewModel.ValidacionesImportarPedidoDTO.PedidoDTO.Pedido == null
+        || ImportarPedidoExcelViewModel.ValidacionesImportarPedidoDTO.PedidoDTO.ListadoDetallePedido.Any()
+        && ImportarPedidoExcelViewModel.Cargando == false
+        && !ImportarPedidoExcelViewModel.ValidacionesImportarPedidoDTO.ErroresImportacionExcel.Any())
+        {
+            <div class="alert alert-danger mt-2" role="alert">
+                <a @onclick="()=> ImportarPedidoExcelViewModel.LimpiarImportacion()">@((MarkupString)@SinDatos)</a>
+            </div>
+        }
+        else
+        {
+
+            <div class="row">
+                <div class="col">
+                    <h5>
+                        <span class="badge badge-info">
+                            Pedido
+                        </span>
+                    </h5>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row">
+                <div class="col">
+                    <h5>
+                        <span class="badge badge-info">
+                            Detalle
+                        </span>
+                    </h5>
+                </div>
+            </div>
+
+            <MatTable Items="ImportarPedidoExcelViewModel.ValidacionesImportarPedidoDTO.PedidoDTO.ListadoDetallePedido"
+              PageLabel="Pagina"
+              PageSize="10" class="mat-elevation-z5">
+                <MatTableHeader>
+                    <th>Referencia</th>
+                    <th style="width:30%">Descripcion</th>
+                    <th>Unidad</th>
+                    <th>Factor Empaque</th>
+                    <th>Cantidad</th>
+                </MatTableHeader>
+                <MatTableRow>
+                    <td>@context.Referencia</td>
+                    <td>@context.Nombre_SIESA</td>
+                    <td>@context.Unidad_SIESA</td>
+                    <td>@context.FactorEmpaque_SIESA</td>
+                    <td>@context.Cantidad</td>
+                </MatTableRow>
+            </MatTable>
+
+            <hr />
+
+        }
+    }
+    else
+    {
+
+        @*<AlgarTech_ProyectoPerformance.PWA.Componentes.GuiasImportacion.OportunidadesCarrera.SurveyPrompt Title="@Internacionalizacion["TituloGuiaCSV"]">
+        </AlgarTech_ProyectoPerformance.PWA.Componentes.GuiasImportacion.OportunidadesCarrera.SurveyPrompt>*@
+    }
+</div>
+
+
+@code {
+
+    public string SinDatos { get; set; }
+    public string Guia { get; set; }
+
+    IJSObjectReference modulo;
+    
+    [CascadingParameter] public AppState AppState { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        AppState.TituloPagina = "Editar Pedido";
+        await refrescarAppState.LlamarActualizarContenedoresSuperiores();
+        ImportarPedidoExcelViewModel.LimpiarImportacion();
+    }
+
+    protected async Task ImportarDatos()
+    {
+        ImportarPedidoExcelViewModel.Cargando = true;
+        ImportarPedidoExcelViewModel.ArchivoCargado = false;
+        ImportarPedidoExcelViewModel.ValidacionesImportarPedidoDTO.ErroresImportacionExcel = new();
+        await ImportarPedidoExcelViewModel.ImportarDatos();
+        ImportarPedidoExcelViewModel.ValidacionesImportarPedidoDTO.PedidoDTO = new();
+        ImportarPedidoExcelViewModel.Cargando = false;
+        StateHasChanged();
+    }
+
+}
+
